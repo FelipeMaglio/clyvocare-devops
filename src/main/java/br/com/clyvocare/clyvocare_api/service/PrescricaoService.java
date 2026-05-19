@@ -50,16 +50,16 @@ public class PrescricaoService {
 
         return toResponseDTO(prescricaoRepository.save(prescricao));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("prescricoes")
     public Page<PrescricaoResponseDTO> listar(Pageable pageable) {
         return prescricaoRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public PrescricaoResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<PrescricaoResponseDTO> buscarPorTratamento(Long idTratamento, Pageable pageable) {
         tratamentoRepository.findById(idTratamento)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tratamento não encontrado com ID: " + idTratamento));
@@ -67,7 +67,7 @@ public class PrescricaoService {
                 .findByTratamentoIdTratamento(idTratamento, pageable)
                 .map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<PrescricaoResponseDTO> buscarPorPet(Long idPet, Pageable pageable) {
         return prescricaoRepository.findByPet(idPet, pageable).map(this::toResponseDTO);
     }
@@ -102,7 +102,7 @@ public class PrescricaoService {
     public void deletar(Long id) {
         prescricaoRepository.delete(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Prescricao buscarEntidade(Long id) {
         return prescricaoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Prescrição não encontrada com ID: " + id));

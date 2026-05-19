@@ -30,21 +30,22 @@ public class RacaService {
         return toResponseDTO(racaRepository.save(raca));
     }
 
+    @Transactional(readOnly = true)
     @Cacheable("racas")
     public Page<RacaResponseDTO> listar(Pageable pageable) {
         return racaRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public RacaResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<RacaResponseDTO> buscarPorEspecie(Long idEspecie, Pageable pageable) {
         especieRepository.findById(idEspecie)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Espécie não encontrada com ID: " + idEspecie));
         return racaRepository.findByEspecieIdEspecie(idEspecie, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<RacaResponseDTO> buscarPorPorte(String porte, Pageable pageable) {
         return racaRepository.findByPorteIgnoreCase(porte, pageable).map(this::toResponseDTO);
     }
@@ -62,7 +63,7 @@ public class RacaService {
     public void deletar(Long id) {
         racaRepository.delete(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Raca buscarEntidade(Long id) {
         return racaRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Raça não encontrada com ID: " + id));

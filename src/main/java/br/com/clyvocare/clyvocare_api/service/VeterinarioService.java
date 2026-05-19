@@ -33,24 +33,24 @@ public class VeterinarioService {
         preencherVeterinario(vet, dto);
         return toResponseDTO(veterinarioRepository.save(vet));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("veterinarios")
     public Page<VeterinarioResponseDTO> listar(Pageable pageable) {
         return veterinarioRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public VeterinarioResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<VeterinarioResponseDTO> buscarPorNome(String nome, Pageable pageable) {
         return veterinarioRepository.findByNomeContainingIgnoreCase(nome, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<VeterinarioResponseDTO> buscarPorEspecialidade(String especialidade, Pageable pageable) {
         return veterinarioRepository.findByEspecialidadeContainingIgnoreCase(especialidade, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<VeterinarioResponseDTO> buscarPorClinica(Long idClinica, Pageable pageable) {
         clinicaRepository.findById(idClinica)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Clínica não encontrada com ID: " + idClinica));
@@ -78,7 +78,7 @@ public class VeterinarioService {
         }
         veterinarioRepository.delete(vet);
     }
-
+    @Transactional(readOnly = true)
     public Veterinario buscarEntidade(Long id) {
         return veterinarioRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Veterinário não encontrado com ID: " + id));

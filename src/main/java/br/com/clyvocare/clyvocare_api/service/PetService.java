@@ -50,7 +50,7 @@ public class PetService {
         return toResponseDTO(petRepository.save(pet));
     }
 
-
+    @Transactional(readOnly = true)
     @Cacheable("pets")
     public Page<PetResponseDTO> listar(Pageable pageable) {
         return petRepository.findAll(pageable).map(this::toResponseDTO);
@@ -61,7 +61,7 @@ public class PetService {
         return toResponseDTO(buscarEntidade(id));
     }
 
-
+    @Transactional(readOnly = true)
     public Page<PetResponseDTO> buscarPorTutor(Long idTutor, Pageable pageable) {
         tutorRepository.findById(idTutor)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tutor não encontrado com ID: " + idTutor));
@@ -69,12 +69,12 @@ public class PetService {
     }
 
 
-
+    @Transactional(readOnly = true)
     public Page<PetResponseDTO> buscarPorEspecie(String nomeEspecie, Pageable pageable) {
         return petRepository.findByEspecie(nomeEspecie, pageable).map(this::toResponseDTO);
     }
 
-
+    @Transactional(readOnly = true)
     public Page<PetResponseDTO> buscarPorNome(String nome, Pageable pageable) {
         return petRepository.findByNomeContainingIgnoreCase(nome, pageable).map(this::toResponseDTO);
     }
@@ -296,7 +296,7 @@ public class PetService {
                 .build();
     }
 
-
+    @Transactional(readOnly = true)
     public Pet buscarEntidade(Long id) {
         return petRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pet não encontrado com ID: " + id));

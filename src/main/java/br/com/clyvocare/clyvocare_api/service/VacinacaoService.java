@@ -38,16 +38,16 @@ public class VacinacaoService {
         preencherVacinacao(vacinacao, dto);
         return toResponseDTO(vacinacaoRepository.save(vacinacao));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("vacinacoes")
     public Page<VacinacaoResponseDTO> listar(Pageable pageable) {
         return vacinacaoRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public VacinacaoResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<VacinacaoResponseDTO> buscarPorPet(Long idPet, Pageable pageable) {
         petRepository.findById(idPet)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pet não encontrado com ID: " + idPet));
@@ -55,7 +55,7 @@ public class VacinacaoService {
                 .findByPetIdPetOrderByDataAplicacaoDesc(idPet, pageable)
                 .map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<VacinacaoResponseDTO> buscarAtrasadasPorPet(Long idPet, Pageable pageable) {
         petRepository.findById(idPet)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pet não encontrado com ID: " + idPet));
@@ -78,7 +78,7 @@ public class VacinacaoService {
     public void deletar(Long id) {
         vacinacaoRepository.delete(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Vacinacao buscarEntidade(Long id) {
         return vacinacaoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Vacinação não encontrada com ID: " + id));

@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -17,30 +18,30 @@ import java.time.LocalDate;
 public class AlertaRegionalService {
 
     private final AlertaRegionalRepository alertaRepository;
-
+    @Transactional(readOnly = true)
     @Cacheable("alertas-regionais")
     public Page<AlertaRegionalResponseDTO> listar(Pageable pageable) {
         return alertaRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public AlertaRegionalResponseDTO buscarPorId(Long id) {
         return toResponseDTO(alertaRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Alerta não encontrado com ID: " + id)));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("alertas-ativos")
     public Page<AlertaRegionalResponseDTO> buscarAtivos(Pageable pageable) {
         return alertaRepository.findAtivos(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<AlertaRegionalResponseDTO> buscarPorEstado(String estado, Pageable pageable) {
         return alertaRepository.findAtivosByEstado(estado.toUpperCase(), pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<AlertaRegionalResponseDTO> buscarPorCidade(Long idCidade, Pageable pageable) {
         return alertaRepository.findAtivosByCidade(idCidade, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<AlertaRegionalResponseDTO> buscarPorNivel(String nivel, Pageable pageable) {
         return alertaRepository.findByNivelRisco(nivel.toUpperCase(), pageable).map(this::toResponseDTO);
     }

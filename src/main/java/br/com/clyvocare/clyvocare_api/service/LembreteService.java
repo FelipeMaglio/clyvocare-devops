@@ -53,28 +53,28 @@ public class LembreteService {
 
         return toResponseDTO(lembreteRepository.save(lembrete));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("lembretes")
     public Page<LembreteResponseDTO> listar(Pageable pageable) {
         return lembreteRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public LembreteResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<LembreteResponseDTO> buscarPorPet(Long idPet, Pageable pageable) {
         petRepository.findById(idPet)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pet não encontrado com ID: " + idPet));
         return lembreteRepository.findByPetIdPet(idPet, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<LembreteResponseDTO> buscarPorTutor(Long idTutor, Pageable pageable) {
         tutorRepository.findById(idTutor)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tutor não encontrado com ID: " + idTutor));
         return lembreteRepository.findByTutorIdTutor(idTutor, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<LembreteResponseDTO> buscarPendentes(Pageable pageable) {
         return lembreteRepository.findPendentesAEnviar(pageable).map(this::toResponseDTO);
     }

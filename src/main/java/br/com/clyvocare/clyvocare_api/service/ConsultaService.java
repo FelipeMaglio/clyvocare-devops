@@ -30,16 +30,16 @@ public class ConsultaService {
         preencherConsulta(consulta, dto);
         return toResponseDTO(consultaRepository.save(consulta));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("consultas")
     public Page<ConsultaResponseDTO> listar(Pageable pageable) {
         return consultaRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public ConsultaResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<ConsultaResponseDTO> buscarPorPet(Long idPet, Pageable pageable) {
         petRepository.findById(idPet)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pet não encontrado com ID: " + idPet));
@@ -47,11 +47,11 @@ public class ConsultaService {
                 .findByPetIdPetOrderByDataConsultaDesc(idPet, pageable)
                 .map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<ConsultaResponseDTO> buscarPorStatus(String status, Pageable pageable) {
         return consultaRepository.findByStatus(status.toUpperCase(), pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<ConsultaResponseDTO> buscarPorClinica(Long idClinica, Pageable pageable) {
         return consultaRepository.findByClinicaIdClinica(idClinica, pageable).map(this::toResponseDTO);
     }
@@ -78,7 +78,7 @@ public class ConsultaService {
         }
         consultaRepository.delete(consulta);
     }
-
+    @Transactional(readOnly = true)
     public Consulta buscarEntidade(Long id) {
         return consultaRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Consulta não encontrada com ID: " + id));

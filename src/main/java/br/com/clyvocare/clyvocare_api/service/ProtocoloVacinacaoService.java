@@ -42,20 +42,20 @@ public class ProtocoloVacinacaoService {
 
         return toResponseDTO(protocoloRepository.save(protocolo));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("protocolos")
     public Page<ProtocoloVacinacaoResponseDTO> listar(Pageable pageable) {
         return protocoloRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public ProtocoloVacinacaoResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<ProtocoloVacinacaoResponseDTO> buscarPorFase(Long idFase, Pageable pageable) {
         return protocoloRepository.findByFaseVidaIdFase(idFase, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<ProtocoloVacinacaoResponseDTO> buscarPorEspecie(Long idEspecie, Pageable pageable) {
         return protocoloRepository.findByEspecie(idEspecie, pageable).map(this::toResponseDTO);
     }
@@ -65,7 +65,7 @@ public class ProtocoloVacinacaoService {
     public void deletar(Long id) {
         protocoloRepository.delete(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     private ProtocoloVacinacao buscarEntidade(Long id) {
         return protocoloRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Protocolo não encontrado com ID: " + id));
