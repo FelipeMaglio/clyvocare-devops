@@ -1,154 +1,129 @@
-1. CIDADES (somente GET)
-Listar cidades
+Testes json
+1️⃣CIDADES — só GET (dados já inseridos via SQL)
+
 GET http://localhost:8080/cidades
-Buscar cidade por ID
 GET http://localhost:8080/cidades/1
-Filtrar por estado
 GET http://localhost:8080/cidades?estado=SP
-Filtrar por região
 GET http://localhost:8080/cidades?regiao=Sudeste
-2. ESPÉCIES
-Criar espécie
+
+2️⃣ ESPÉCIES
 POST http://localhost:8080/especies
-{
+json{
   "nome": "Cão",
   "descricao": "Mamífero doméstico"
 }
-{
+json{
   "nome": "Gato",
   "descricao": "Felino doméstico"
 }
-Listar espécies
 GET http://localhost:8080/especies
-Buscar espécie por ID
 GET http://localhost:8080/especies/1
-Atualizar espécie
 PUT http://localhost:8080/especies/1
-{
+json{
   "nome": "Cão",
   "descricao": "Mamífero doméstico atualizado"
 }
-Remover espécie
 DELETE http://localhost:8080/especies/1
-3. RAÇAS
-Criar raça
+
+3️⃣ RAÇAS
 POST http://localhost:8080/racas
-{
+json{
   "nome": "Golden Retriever",
   "porte": "Grande",
   "idEspecie": 1
 }
-{
+json{
   "nome": "Poodle",
   "porte": "Pequeno",
   "idEspecie": 1
 }
-{
+json{
   "nome": "Vira-lata",
   "porte": "Médio",
   "idEspecie": 1
 }
-{
+json{
   "nome": "Persa",
   "porte": "Pequeno",
   "idEspecie": 2
 }
-Listar raças
 GET http://localhost:8080/racas
-Buscar raça por ID
 GET http://localhost:8080/racas/1
-Filtrar por espécie
 GET http://localhost:8080/racas?idEspecie=1
-Filtrar por porte
 GET http://localhost:8080/racas?porte=Grande
-Atualizar raça
 PUT http://localhost:8080/racas/1
-{
+json{
   "nome": "Golden Retriever",
   "porte": "Grande",
   "idEspecie": 1
 }
-Remover raça
 DELETE http://localhost:8080/racas/1
-4. FASES DE VIDA (somente GET)
-Listar fases de vida
+
+4️⃣ FASES DE VIDA — só GET (dados inseridos via SQL)
 GET http://localhost:8080/fases-vida
-Buscar fase por ID
 GET http://localhost:8080/fases-vida/1
-Filtrar por espécie
 GET http://localhost:8080/fases-vida?idEspecie=1
-5. VACINAS
-Criar vacina
+
+5️⃣ VACINAS
 POST http://localhost:8080/vacinas
-{
+json{
   "nome": "V10",
   "fabricante": "MSD Saúde Animal",
   "doencasPrevine": "Cinomose, Parvovirose, Hepatite, Leptospirose",
   "intervaloReforcoDias": 365,
   "idEspecie": 1
 }
-{
+json{
   "nome": "Antirrábica",
   "fabricante": "Zoetis",
   "doencasPrevine": "Raiva",
   "intervaloReforcoDias": 365,
   "idEspecie": 1
 }
-{
+json{
   "nome": "V4 Felina",
   "fabricante": "Boehringer",
   "doencasPrevine": "Panleucopenia, Rinotraqueíte, Calicivirose",
   "intervaloReforcoDias": 365,
   "idEspecie": 2
 }
-Listar vacinas
 GET http://localhost:8080/vacinas
-Buscar vacina por ID
 GET http://localhost:8080/vacinas/1
-Filtrar por espécie
 GET http://localhost:8080/vacinas?idEspecie=1
-Filtrar por nome
 GET http://localhost:8080/vacinas?nome=V10
-Atualizar vacina
 PUT http://localhost:8080/vacinas/1
-{
+json{
   "nome": "V10",
   "fabricante": "MSD Saúde Animal",
   "doencasPrevine": "Cinomose, Parvovirose, Hepatite, Leptospirose, Coronavirose",
   "intervaloReforcoDias": 365,
   "idEspecie": 1
 }
-Remover vacina
 DELETE http://localhost:8080/vacinas/1
-6. PROTOCOLOS DE VACINAÇÃO
-Criar protocolo
+
+6️⃣ PROTOCOLOS DE VACINAÇÃO
 POST http://localhost:8080/protocolos-vacinacao
-{
+json{
   "obrigatoria": "S",
   "idadeAplicacaoDias": 45,
   "idVacina": 1,
   "idFase": 1
 }
-{
+json{
   "obrigatoria": "S",
   "idadeAplicacaoDias": 365,
   "idVacina": 2,
   "idFase": 2
 }
-Listar protocolos
 GET http://localhost:8080/protocolos-vacinacao
-Buscar protocolo por ID
 GET http://localhost:8080/protocolos-vacinacao/1
-Filtrar por fase
 GET http://localhost:8080/protocolos-vacinacao?idFase=1
-Filtrar por espécie
 GET http://localhost:8080/protocolos-vacinacao?idEspecie=1
-Remover protocolo
 DELETE http://localhost:8080/protocolos-vacinacao/1
-7. TUTORES
-Criar tutor
+
+7️⃣ TUTORES
 POST http://localhost:8080/tutores
-{
+json{
   "nome": "Maria da Silva",
   "email": "maria@email.com",
   "telefone": "11999999999",
@@ -156,7 +131,7 @@ POST http://localhost:8080/tutores
   "senha": "senha123",
   "idCidade": 1
 }
-{
+json{
   "nome": "João Santos",
   "email": "joao@email.com",
   "telefone": "11988888888",
@@ -164,35 +139,29 @@ POST http://localhost:8080/tutores
   "senha": "senha456",
   "idCidade": 1
 }
-Testar validação (retorno 400)
-{
+Testar validação — deve retornar 400:
+json{
   "nome": "",
   "email": "email-invalido",
   "telefone": "11999999999",
   "cpf": "123",
   "senha": "123"
 }
-Testar duplicidade (retorno 422)
-{
+Testar duplicidade — deve retornar 422:
+json{
   "nome": "Outro Nome",
   "email": "maria@email.com",
   "telefone": "11977777777",
   "cpf": "12345678901",
   "senha": "senha789"
 }
-Listar tutores
 GET http://localhost:8080/tutores
-Buscar tutor por ID
 GET http://localhost:8080/tutores/1
-Filtrar por nome
 GET http://localhost:8080/tutores?nome=Maria
-Filtrar por estado
 GET http://localhost:8080/tutores?estado=SP
-Paginação e ordenação
 GET http://localhost:8080/tutores?page=0&size=5&sort=nome,asc
-Atualizar tutor
 PUT http://localhost:8080/tutores/1
-{
+json{
   "nome": "Maria da Silva Souza",
   "email": "maria.souza@email.com",
   "telefone": "11977777777",
@@ -200,12 +169,11 @@ PUT http://localhost:8080/tutores/1
   "senha": "novasenha123",
   "idCidade": 1
 }
-Remover tutor
 DELETE http://localhost:8080/tutores/1
-8. CLÍNICAS
-Criar clínica
+
+8️⃣ CLÍNICAS
 POST http://localhost:8080/clinicas
-{
+json{
   "nome": "Clínica Vet Amigos",
   "cnpj": "12345678000190",
   "telefone": "1133334444",
@@ -215,28 +183,21 @@ POST http://localhost:8080/clinicas
   "dataAssinatura": "2025-01-01",
   "idCidade": 1
 }
-{
+json{
   "nome": "PetCare Veterinária",
   "cnpj": "98765432000111",
   "telefone": "1144445555",
   "email": "contato@petcare.com",
-  "endereco": "Rua XPTO, 200 - São Paulo/SP",
   "planoAssinatura": "BASICO",
   "dataAssinatura": "2025-03-01"
 }
-Listar clínicas
 GET http://localhost:8080/clinicas
-Buscar clínica por ID
 GET http://localhost:8080/clinicas/1
-Filtrar por nome
 GET http://localhost:8080/clinicas?nome=Vet
-Filtrar por plano
 GET http://localhost:8080/clinicas?plano=PRO
-Filtrar por estado
 GET http://localhost:8080/clinicas?estado=SP
-Atualizar clínica
 PUT http://localhost:8080/clinicas/1
-{
+json{
   "nome": "Clínica Vet Amigos Premium",
   "cnpj": "12345678000190",
   "telefone": "1133334444",
@@ -246,12 +207,11 @@ PUT http://localhost:8080/clinicas/1
   "dataAssinatura": "2025-01-01",
   "idCidade": 1
 }
-Remover clínica
 DELETE http://localhost:8080/clinicas/1
-9. VETERINÁRIOS
-Criar veterinário
+
+9️⃣ VETERINÁRIOS
 POST http://localhost:8080/veterinarios
-{
+json{
   "nome": "Dr. João Souza",
   "crmv": "CRMV-SP 12345",
   "especialidade": "Clínica Geral",
@@ -259,7 +219,7 @@ POST http://localhost:8080/veterinarios
   "telefone": "11988887777",
   "idClinica": 1
 }
-{
+json{
   "nome": "Dra. Ana Lima",
   "crmv": "CRMV-SP 67890",
   "especialidade": "Cardiologia",
@@ -267,19 +227,13 @@ POST http://localhost:8080/veterinarios
   "telefone": "11977776666",
   "idClinica": 1
 }
-Listar veterinários
 GET http://localhost:8080/veterinarios
-Buscar veterinário por ID
 GET http://localhost:8080/veterinarios/1
-Filtrar por nome
 GET http://localhost:8080/veterinarios?nome=João
-Filtrar por especialidade
 GET http://localhost:8080/veterinarios?especialidade=Cardiologia
-Filtrar por clínica
 GET http://localhost:8080/veterinarios?idClinica=1
-Atualizar veterinário
 PUT http://localhost:8080/veterinarios/1
-{
+json{
   "nome": "Dr. João Souza",
   "crmv": "CRMV-SP 12345",
   "especialidade": "Ortopedia",
@@ -287,12 +241,11 @@ PUT http://localhost:8080/veterinarios/1
   "telefone": "11988887777",
   "idClinica": 1
 }
-Remover veterinário
 DELETE http://localhost:8080/veterinarios/1
-10. PETS
-Criar pet
+
+🔟 PETS
 POST http://localhost:8080/pets
-{
+json{
   "nome": "Rex",
   "dataNascimento": "2022-03-15",
   "sexo": "M",
@@ -302,7 +255,7 @@ POST http://localhost:8080/pets
   "idEspecie": 1,
   "idRaca": 1
 }
-{
+json{
   "nome": "Mel",
   "dataNascimento": "2019-06-10",
   "sexo": "F",
@@ -311,7 +264,7 @@ POST http://localhost:8080/pets
   "idEspecie": 1,
   "idRaca": 2
 }
-{
+json{
   "nome": "Mimi",
   "dataNascimento": "2020-01-05",
   "sexo": "F",
@@ -320,29 +273,22 @@ POST http://localhost:8080/pets
   "idEspecie": 2,
   "idRaca": 4
 }
-Testar raça incompatível com espécie (retorno 422)
-{
+Testar raça incompatível com espécie — deve retornar 422:
+json{
   "nome": "Erro",
   "sexo": "M",
   "idTutor": 1,
   "idEspecie": 2,
   "idRaca": 1
 }
-Listar pets
 GET http://localhost:8080/pets
-Buscar pet por ID
 GET http://localhost:8080/pets/1
-Filtrar por nome
 GET http://localhost:8080/pets?nome=Rex
-Filtrar por espécie
 GET http://localhost:8080/pets?especie=Cão
-Filtrar por tutor
 GET http://localhost:8080/pets?idTutor=1
-Paginação e ordenação
 GET http://localhost:8080/pets?page=0&size=5&sort=nome,asc
-Atualizar pet
 PUT http://localhost:8080/pets/1
-{
+json{
   "nome": "Rex",
   "dataNascimento": "2022-03-15",
   "sexo": "M",
@@ -352,12 +298,11 @@ PUT http://localhost:8080/pets/1
   "idEspecie": 1,
   "idRaca": 1
 }
-Remover pet
 DELETE http://localhost:8080/pets/1
-11. CONSULTAS
-Criar consulta
+
+1️⃣1️⃣ CONSULTAS
 POST http://localhost:8080/consultas
-{
+json{
   "dataConsulta": "2024-01-10",
   "tipo": "ROTINA",
   "motivo": "Check-up anual",
@@ -368,7 +313,7 @@ POST http://localhost:8080/consultas
   "idVeterinario": 1,
   "idClinica": 1
 }
-{
+json{
   "dataConsulta": "2025-06-01",
   "tipo": "RETORNO",
   "motivo": "Retorno pós-cirurgia",
@@ -377,7 +322,7 @@ POST http://localhost:8080/consultas
   "idVeterinario": 1,
   "idClinica": 1
 }
-{
+json{
   "dataConsulta": "2025-04-20",
   "tipo": "EMERGENCIA",
   "motivo": "Vômito persistente há 2 dias",
@@ -388,20 +333,14 @@ POST http://localhost:8080/consultas
   "idVeterinario": 2,
   "idClinica": 1
 }
-Listar consultas
 GET http://localhost:8080/consultas
-Buscar consulta por ID
 GET http://localhost:8080/consultas/1
-Filtrar por pet
 GET http://localhost:8080/consultas?idPet=1
-Filtrar por status
 GET http://localhost:8080/consultas?status=AGENDADA
 GET http://localhost:8080/consultas?status=REALIZADA
-Filtrar por clínica
 GET http://localhost:8080/consultas?idClinica=1
-Atualizar consulta
 PUT http://localhost:8080/consultas/2
-{
+json{
   "dataConsulta": "2025-06-01",
   "tipo": "RETORNO",
   "motivo": "Retorno pós-cirurgia",
@@ -411,7 +350,6 @@ PUT http://localhost:8080/consultas/2
   "idVeterinario": 1,
   "idClinica": 1
 }
-Remover consulta
 DELETE http://localhost:8080/consultas/2
 
 1️⃣2️⃣ VACINAÇÕES
@@ -654,6 +592,3 @@ GET http://localhost:8080/alertas-regionais?idCidade=1
 GET http://localhost:8080/pets/1/risco
 GET http://localhost:8080/pets/1/alertas
 GET http://localhost:8080/pets/1/recomendacoes
-
-📋 Checklist de testes obrigatórios para o professor
-RequisitoComo testarBean ValidationPOST tutor com campos inválidos → 400Regra de negócioPOST tutor com email duplicado → 422PaginaçãoGET /pets?page=0&size=5OrdenaçãoGET /tutores?sort=nome,ascBusca com parâmetrosGET /pets?especie=CãoCacheGET /pets duas vezes — segunda mais rápida404 customizadoGET /pets/999Relacionamento JPAGET /pets/1 — retorna tutor, espécie, raçaJPQLGET /tutores?estado=SPDiferencial inteligenteGET /pets/1/risco e /alertas
