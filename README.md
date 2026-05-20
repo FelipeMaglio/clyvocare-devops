@@ -143,17 +143,7 @@ https://shell.azure.com
 
 ---
 
-## 📥 Passo 1 — Clone o repositório
-
-```bash
-git clone https://github.com/FelipeMaglio/clyvocare-devops.git
-
-cd clyvocare-devops
-```
-
----
-
-## ☁️ Passo 2 — Acesse o Azure Cloud Shell
+## ☁️ Passo 1 — Acesse o Azure Cloud Shell
 
 Acesse:
 
@@ -165,7 +155,7 @@ Faça login com sua conta Azure e selecione **Bash** quando solicitado.
 
 ---
 
-## 📤 Passo 3 — Faça upload do script
+## 📤 Passo 2 — Faça upload do script
 
 O arquivo `deploy.sh` está disponível dentro do repositório:
 
@@ -199,7 +189,7 @@ sed -i 's/\r$//' deploy.sh
 
 ---
 
-## ⏳ Passo 4 — Aguarde o deploy
+## ⏳ Passo 3 — Aguarde o deploy
 
 O processo leva aproximadamente:
 
@@ -223,7 +213,7 @@ http://IP_DA_VM:8080
 
 ---
 
-# 🗄️ Passo 4.1 — Conectar no banco via SQL Developer (Opcional)
+# 🗄️ Passo 3.1 — Conectar no banco via SQL Developer (Opcional)
 
 Após o deploy, é possível conectar diretamente no banco Oracle utilizando o **SQL Developer**.
 
@@ -369,7 +359,7 @@ Hostname
 
 ---
 
-# 🔐 Passo 5 — Conectar na VM via SSH (Opcional)
+# 🔐 Passo 4 — Conectar na VM via SSH (Opcional)
 
 ```bash
 ssh azureuser@IP_DA_VM
@@ -425,7 +415,7 @@ docker volume ls
 
 ---
 
-# 🗑️ Passo 6 — Deletar tudo no final
+# 🗑️ Passo 5 — Deletar tudo no final
 
 ```bash
 az group delete --name rg-clyvocare --yes --no-wait
