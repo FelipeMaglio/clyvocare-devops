@@ -499,13 +499,29 @@ docker exec clyvocare-api whoami
 docker volume ls
 ```
 
----
-
 # 🗑️ Passo 5 — Deletar tudo no final
 
 ```bash
 az group delete --name rg-clyvocare --yes --no-wait
 ```
+
+---
+
+## ✅ Verificar se os recursos foram removidos
+
+Após alguns minutos, execute:
+
+```bash
+az group list --output table
+```
+
+O Resource Group:
+
+```text
+rg-clyvocare
+```
+
+não deve mais aparecer na lista.
 
 ---
 
