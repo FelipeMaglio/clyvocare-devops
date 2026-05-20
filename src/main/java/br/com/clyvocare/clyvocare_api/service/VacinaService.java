@@ -33,20 +33,20 @@ public class VacinaService {
         preencherVacina(vacina, dto);
         return toResponseDTO(vacinaRepository.save(vacina));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("vacinas")
     public Page<VacinaResponseDTO> listar(Pageable pageable) {
         return vacinaRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public VacinaResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<VacinaResponseDTO> buscarPorNome(String nome, Pageable pageable) {
         return vacinaRepository.findByNomeContainingIgnoreCase(nome, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<VacinaResponseDTO> buscarPorEspecie(Long idEspecie, Pageable pageable) {
         especieRepository.findById(idEspecie)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Espécie não encontrada com ID: " + idEspecie));
@@ -69,7 +69,7 @@ public class VacinaService {
     public void deletar(Long id) {
         vacinaRepository.delete(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Vacina buscarEntidade(Long id) {
         return vacinaRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Vacina não encontrada com ID: " + id));

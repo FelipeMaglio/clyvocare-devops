@@ -1,0 +1,594 @@
+Testes json
+1️⃣CIDADES — só GET (dados já inseridos via SQL)
+
+GET http://localhost:8080/cidades
+GET http://localhost:8080/cidades/1
+GET http://localhost:8080/cidades?estado=SP
+GET http://localhost:8080/cidades?regiao=Sudeste
+
+2️⃣ ESPÉCIES
+POST http://localhost:8080/especies
+json{
+  "nome": "Cão",
+  "descricao": "Mamífero doméstico"
+}
+json{
+  "nome": "Gato",
+  "descricao": "Felino doméstico"
+}
+GET http://localhost:8080/especies
+GET http://localhost:8080/especies/1
+PUT http://localhost:8080/especies/1
+json{
+  "nome": "Cão",
+  "descricao": "Mamífero doméstico atualizado"
+}
+DELETE http://localhost:8080/especies/1
+
+3️⃣ RAÇAS
+POST http://localhost:8080/racas
+json{
+  "nome": "Golden Retriever",
+  "porte": "Grande",
+  "idEspecie": 1
+}
+json{
+  "nome": "Poodle",
+  "porte": "Pequeno",
+  "idEspecie": 1
+}
+json{
+  "nome": "Vira-lata",
+  "porte": "Médio",
+  "idEspecie": 1
+}
+json{
+  "nome": "Persa",
+  "porte": "Pequeno",
+  "idEspecie": 2
+}
+GET http://localhost:8080/racas
+GET http://localhost:8080/racas/1
+GET http://localhost:8080/racas?idEspecie=1
+GET http://localhost:8080/racas?porte=Grande
+PUT http://localhost:8080/racas/1
+json{
+  "nome": "Golden Retriever",
+  "porte": "Grande",
+  "idEspecie": 1
+}
+DELETE http://localhost:8080/racas/1
+
+4️⃣ FASES DE VIDA — só GET (dados inseridos via SQL)
+GET http://localhost:8080/fases-vida
+GET http://localhost:8080/fases-vida/1
+GET http://localhost:8080/fases-vida?idEspecie=1
+
+5️⃣ VACINAS
+POST http://localhost:8080/vacinas
+json{
+  "nome": "V10",
+  "fabricante": "MSD Saúde Animal",
+  "doencasPrevine": "Cinomose, Parvovirose, Hepatite, Leptospirose",
+  "intervaloReforcoDias": 365,
+  "idEspecie": 1
+}
+json{
+  "nome": "Antirrábica",
+  "fabricante": "Zoetis",
+  "doencasPrevine": "Raiva",
+  "intervaloReforcoDias": 365,
+  "idEspecie": 1
+}
+json{
+  "nome": "V4 Felina",
+  "fabricante": "Boehringer",
+  "doencasPrevine": "Panleucopenia, Rinotraqueíte, Calicivirose",
+  "intervaloReforcoDias": 365,
+  "idEspecie": 2
+}
+GET http://localhost:8080/vacinas
+GET http://localhost:8080/vacinas/1
+GET http://localhost:8080/vacinas?idEspecie=1
+GET http://localhost:8080/vacinas?nome=V10
+PUT http://localhost:8080/vacinas/1
+json{
+  "nome": "V10",
+  "fabricante": "MSD Saúde Animal",
+  "doencasPrevine": "Cinomose, Parvovirose, Hepatite, Leptospirose, Coronavirose",
+  "intervaloReforcoDias": 365,
+  "idEspecie": 1
+}
+DELETE http://localhost:8080/vacinas/1
+
+6️⃣ PROTOCOLOS DE VACINAÇÃO
+POST http://localhost:8080/protocolos-vacinacao
+json{
+  "obrigatoria": "S",
+  "idadeAplicacaoDias": 45,
+  "idVacina": 1,
+  "idFase": 1
+}
+json{
+  "obrigatoria": "S",
+  "idadeAplicacaoDias": 365,
+  "idVacina": 2,
+  "idFase": 2
+}
+GET http://localhost:8080/protocolos-vacinacao
+GET http://localhost:8080/protocolos-vacinacao/1
+GET http://localhost:8080/protocolos-vacinacao?idFase=1
+GET http://localhost:8080/protocolos-vacinacao?idEspecie=1
+DELETE http://localhost:8080/protocolos-vacinacao/1
+
+7️⃣ TUTORES
+POST http://localhost:8080/tutores
+json{
+  "nome": "Maria da Silva",
+  "email": "maria@email.com",
+  "telefone": "11999999999",
+  "cpf": "12345678901",
+  "senha": "senha123",
+  "idCidade": 1
+}
+json{
+  "nome": "João Santos",
+  "email": "joao@email.com",
+  "telefone": "11988888888",
+  "cpf": "98765432100",
+  "senha": "senha456",
+  "idCidade": 1
+}
+Testar validação — deve retornar 400:
+json{
+  "nome": "",
+  "email": "email-invalido",
+  "telefone": "11999999999",
+  "cpf": "123",
+  "senha": "123"
+}
+Testar duplicidade — deve retornar 422:
+json{
+  "nome": "Outro Nome",
+  "email": "maria@email.com",
+  "telefone": "11977777777",
+  "cpf": "12345678901",
+  "senha": "senha789"
+}
+GET http://localhost:8080/tutores
+GET http://localhost:8080/tutores/1
+GET http://localhost:8080/tutores?nome=Maria
+GET http://localhost:8080/tutores?estado=SP
+GET http://localhost:8080/tutores?page=0&size=5&sort=nome,asc
+PUT http://localhost:8080/tutores/1
+json{
+  "nome": "Maria da Silva Souza",
+  "email": "maria.souza@email.com",
+  "telefone": "11977777777",
+  "cpf": "12345678901",
+  "senha": "novasenha123",
+  "idCidade": 1
+}
+DELETE http://localhost:8080/tutores/1
+
+8️⃣ CLÍNICAS
+POST http://localhost:8080/clinicas
+json{
+  "nome": "Clínica Vet Amigos",
+  "cnpj": "12345678000190",
+  "telefone": "1133334444",
+  "email": "contato@vetamigos.com",
+  "endereco": "Rua das Flores, 100 - São Paulo/SP",
+  "planoAssinatura": "PRO",
+  "dataAssinatura": "2025-01-01",
+  "idCidade": 1
+}
+json{
+  "nome": "PetCare Veterinária",
+  "cnpj": "98765432000111",
+  "telefone": "1144445555",
+  "email": "contato@petcare.com",
+  "planoAssinatura": "BASICO",
+  "dataAssinatura": "2025-03-01"
+}
+GET http://localhost:8080/clinicas
+GET http://localhost:8080/clinicas/1
+GET http://localhost:8080/clinicas?nome=Vet
+GET http://localhost:8080/clinicas?plano=PRO
+GET http://localhost:8080/clinicas?estado=SP
+PUT http://localhost:8080/clinicas/1
+json{
+  "nome": "Clínica Vet Amigos Premium",
+  "cnpj": "12345678000190",
+  "telefone": "1133334444",
+  "email": "contato@vetamigos.com",
+  "endereco": "Rua das Flores, 100 - São Paulo/SP",
+  "planoAssinatura": "ENTERPRISE",
+  "dataAssinatura": "2025-01-01",
+  "idCidade": 1
+}
+DELETE http://localhost:8080/clinicas/1
+
+9️⃣ VETERINÁRIOS
+POST http://localhost:8080/veterinarios
+json{
+  "nome": "Dr. João Souza",
+  "crmv": "CRMV-SP 12345",
+  "especialidade": "Clínica Geral",
+  "email": "joao@vetamigos.com",
+  "telefone": "11988887777",
+  "idClinica": 1
+}
+json{
+  "nome": "Dra. Ana Lima",
+  "crmv": "CRMV-SP 67890",
+  "especialidade": "Cardiologia",
+  "email": "ana@vetamigos.com",
+  "telefone": "11977776666",
+  "idClinica": 1
+}
+GET http://localhost:8080/veterinarios
+GET http://localhost:8080/veterinarios/1
+GET http://localhost:8080/veterinarios?nome=João
+GET http://localhost:8080/veterinarios?especialidade=Cardiologia
+GET http://localhost:8080/veterinarios?idClinica=1
+PUT http://localhost:8080/veterinarios/1
+json{
+  "nome": "Dr. João Souza",
+  "crmv": "CRMV-SP 12345",
+  "especialidade": "Ortopedia",
+  "email": "joao@vetamigos.com",
+  "telefone": "11988887777",
+  "idClinica": 1
+}
+DELETE http://localhost:8080/veterinarios/1
+
+🔟 PETS
+POST http://localhost:8080/pets
+json{
+  "nome": "Rex",
+  "dataNascimento": "2022-03-15",
+  "sexo": "M",
+  "pesoAtual": 12.500,
+  "microchip": "900123456789012",
+  "idTutor": 1,
+  "idEspecie": 1,
+  "idRaca": 1
+}
+json{
+  "nome": "Mel",
+  "dataNascimento": "2019-06-10",
+  "sexo": "F",
+  "pesoAtual": 8.200,
+  "idTutor": 1,
+  "idEspecie": 1,
+  "idRaca": 2
+}
+json{
+  "nome": "Mimi",
+  "dataNascimento": "2020-01-05",
+  "sexo": "F",
+  "pesoAtual": 4.100,
+  "idTutor": 2,
+  "idEspecie": 2,
+  "idRaca": 4
+}
+Testar raça incompatível com espécie — deve retornar 422:
+json{
+  "nome": "Erro",
+  "sexo": "M",
+  "idTutor": 1,
+  "idEspecie": 2,
+  "idRaca": 1
+}
+GET http://localhost:8080/pets
+GET http://localhost:8080/pets/1
+GET http://localhost:8080/pets?nome=Rex
+GET http://localhost:8080/pets?especie=Cão
+GET http://localhost:8080/pets?idTutor=1
+GET http://localhost:8080/pets?page=0&size=5&sort=nome,asc
+PUT http://localhost:8080/pets/1
+json{
+  "nome": "Rex",
+  "dataNascimento": "2022-03-15",
+  "sexo": "M",
+  "pesoAtual": 13.000,
+  "microchip": "900123456789012",
+  "idTutor": 1,
+  "idEspecie": 1,
+  "idRaca": 1
+}
+DELETE http://localhost:8080/pets/1
+
+1️⃣1️⃣ CONSULTAS
+POST http://localhost:8080/consultas
+json{
+  "dataConsulta": "2024-01-10",
+  "tipo": "ROTINA",
+  "motivo": "Check-up anual",
+  "diagnostico": "Animal saudável",
+  "pesoNaConsulta": 12.500,
+  "status": "REALIZADA",
+  "idPet": 1,
+  "idVeterinario": 1,
+  "idClinica": 1
+}
+json{
+  "dataConsulta": "2025-06-01",
+  "tipo": "RETORNO",
+  "motivo": "Retorno pós-cirurgia",
+  "status": "AGENDADA",
+  "idPet": 1,
+  "idVeterinario": 1,
+  "idClinica": 1
+}
+json{
+  "dataConsulta": "2025-04-20",
+  "tipo": "EMERGENCIA",
+  "motivo": "Vômito persistente há 2 dias",
+  "diagnostico": "Gastroenterite",
+  "pesoNaConsulta": 11.800,
+  "status": "REALIZADA",
+  "idPet": 1,
+  "idVeterinario": 2,
+  "idClinica": 1
+}
+GET http://localhost:8080/consultas
+GET http://localhost:8080/consultas/1
+GET http://localhost:8080/consultas?idPet=1
+GET http://localhost:8080/consultas?status=AGENDADA
+GET http://localhost:8080/consultas?status=REALIZADA
+GET http://localhost:8080/consultas?idClinica=1
+PUT http://localhost:8080/consultas/2
+json{
+  "dataConsulta": "2025-06-01",
+  "tipo": "RETORNO",
+  "motivo": "Retorno pós-cirurgia",
+  "diagnostico": "Recuperação ótima",
+  "status": "REALIZADA",
+  "idPet": 1,
+  "idVeterinario": 1,
+  "idClinica": 1
+}
+DELETE http://localhost:8080/consultas/2
+
+1️⃣2️⃣ VACINAÇÕES
+POST http://localhost:8080/vacinacoes
+json{
+  "dataAplicacao": "2024-01-10",
+  "lote": "L2024A001",
+  "proximaDose": "2024-05-01",
+  "validade": "2026-01-01",
+  "idPet": 1,
+  "idVacina": 1,
+  "idConsulta": 1,
+  "idVeterinario": 1
+}
+json{
+  "dataAplicacao": "2024-01-10",
+  "lote": "L2024B002",
+  "proximaDose": "2026-01-10",
+  "validade": "2027-01-01",
+  "idPet": 1,
+  "idVacina": 2,
+  "idConsulta": 1,
+  "idVeterinario": 1
+}
+GET http://localhost:8080/vacinacoes
+GET http://localhost:8080/vacinacoes/1
+GET http://localhost:8080/vacinacoes?idPet=1
+GET http://localhost:8080/vacinacoes?idPet=1&atrasadas=true
+PUT http://localhost:8080/vacinacoes/1
+json{
+  "dataAplicacao": "2024-01-10",
+  "lote": "L2024A001",
+  "proximaDose": "2025-01-10",
+  "validade": "2026-01-01",
+  "idPet": 1,
+  "idVacina": 1,
+  "idVeterinario": 1
+}
+DELETE http://localhost:8080/vacinacoes/1
+
+1️⃣3️⃣ TRATAMENTOS
+POST http://localhost:8080/tratamentos
+json{
+  "descricao": "Antibioticoterapia para infecção respiratória",
+  "dataInicio": "2024-01-10",
+  "dataFim": "2024-01-20",
+  "status": "CONCLUIDO",
+  "idPet": 1,
+  "idConsulta": 1
+}
+json{
+  "descricao": "Controle de peso com dieta hipocalórica",
+  "dataInicio": "2025-01-01",
+  "status": "ATIVO",
+  "idPet": 1
+}
+GET http://localhost:8080/tratamentos
+GET http://localhost:8080/tratamentos/1
+GET http://localhost:8080/tratamentos?idPet=1
+GET http://localhost:8080/tratamentos?status=ATIVO
+PUT http://localhost:8080/tratamentos/2
+json{
+  "descricao": "Controle de peso com dieta hipocalórica",
+  "dataInicio": "2025-01-01",
+  "dataFim": "2025-06-01",
+  "status": "CONCLUIDO",
+  "idPet": 1
+}
+DELETE http://localhost:8080/tratamentos/1
+
+1️⃣4️⃣ MEDICAMENTOS
+POST http://localhost:8080/medicamentos
+json{
+  "nome": "Amoxicilina 500mg",
+  "principioAtivo": "Amoxicilina",
+  "fabricante": "Eurofarma"
+}
+json{
+  "nome": "Prednisolona 20mg",
+  "principioAtivo": "Prednisolona",
+  "fabricante": "Pfizer"
+}
+GET http://localhost:8080/medicamentos
+GET http://localhost:8080/medicamentos/1
+GET http://localhost:8080/medicamentos?nome=Amoxicilina
+GET http://localhost:8080/medicamentos?principioAtivo=Prednisolona
+PUT http://localhost:8080/medicamentos/1
+json{
+  "nome": "Amoxicilina 500mg",
+  "principioAtivo": "Amoxicilina Triidratada",
+  "fabricante": "Eurofarma"
+}
+DELETE http://localhost:8080/medicamentos/1
+
+1️⃣5️⃣ PRESCRIÇÕES
+POST http://localhost:8080/prescricoes
+json{
+  "dosagem": "10mg",
+  "frequencia": "2x ao dia",
+  "duracaoDias": 7,
+  "instrucoes": "Administrar após alimentação",
+  "idTratamento": 2,
+  "idMedicamento": 1
+}
+json{
+  "dosagem": "20mg",
+  "frequencia": "1x ao dia",
+  "duracaoDias": 10,
+  "instrucoes": "Não interromper antes do prazo",
+  "idTratamento": 2,
+  "idMedicamento": 2
+}
+GET http://localhost:8080/prescricoes
+GET http://localhost:8080/prescricoes/1
+GET http://localhost:8080/prescricoes?idTratamento=2
+GET http://localhost:8080/prescricoes?idPet=1
+PUT http://localhost:8080/prescricoes/1
+json{
+  "dosagem": "15mg",
+  "frequencia": "3x ao dia",
+  "duracaoDias": 5,
+  "instrucoes": "Administrar com bastante água",
+  "idTratamento": 2,
+  "idMedicamento": 1
+}
+DELETE http://localhost:8080/prescricoes/1
+
+1️⃣6️⃣ EXAMES
+POST http://localhost:8080/exames
+json{
+  "tipoExame": "Hemograma",
+  "dataSolicitacao": "2025-05-10",
+  "laboratorio": "LabVet SP",
+  "idPet": 1,
+  "idConsulta": 1
+}
+json{
+  "tipoExame": "Raio-X Tórax",
+  "dataSolicitacao": "2025-05-10",
+  "laboratorio": "LabVet SP",
+  "idPet": 1,
+  "idConsulta": 3
+}
+PUT /exames/1 — informar resultado
+json{
+  "tipoExame": "Hemograma",
+  "dataSolicitacao": "2025-05-10",
+  "dataResultado": "2025-05-12",
+  "resultado": "Hemograma dentro dos parâmetros normais. Sem alterações.",
+  "laboratorio": "LabVet SP",
+  "idPet": 1,
+  "idConsulta": 1
+}
+GET http://localhost:8080/exames
+GET http://localhost:8080/exames/1
+GET http://localhost:8080/exames?idPet=1
+GET http://localhost:8080/exames?tipo=Hemograma
+GET http://localhost:8080/exames?idConsulta=1
+GET http://localhost:8080/exames?semResultado=true
+DELETE http://localhost:8080/exames/1
+
+1️⃣7️⃣ LEMBRETES
+POST http://localhost:8080/lembretes
+json{
+  "tipo": "VACINA",
+  "dataEvento": "2025-06-01",
+  "mensagem": "Vacina V10 do Rex vence em 01/06/2025. Agende com urgência!",
+  "status": "PENDENTE",
+  "canal": "WHATSAPP",
+  "idPet": 1,
+  "idTutor": 1
+}
+json{
+  "tipo": "CONSULTA",
+  "dataEvento": "2025-07-15",
+  "mensagem": "Check-up anual do Rex agendado para 15/07/2025",
+  "status": "PENDENTE",
+  "canal": "EMAIL",
+  "idPet": 1,
+  "idTutor": 1
+}
+json{
+  "tipo": "MEDICAMENTO",
+  "dataEvento": "2025-05-20",
+  "mensagem": "Dar Amoxicilina para o Rex às 8h e às 20h",
+  "status": "PENDENTE",
+  "canal": "PUSH",
+  "idPet": 1,
+  "idTutor": 1
+}
+GET http://localhost:8080/lembretes
+GET http://localhost:8080/lembretes/1
+GET http://localhost:8080/lembretes?idPet=1
+GET http://localhost:8080/lembretes?idTutor=1
+GET http://localhost:8080/lembretes?pendentes=true
+PUT http://localhost:8080/lembretes/1
+json{
+  "tipo": "VACINA",
+  "dataEvento": "2025-06-01",
+  "mensagem": "Vacina V10 do Rex vence em 01/06/2025. Agende com urgência!",
+  "status": "ENVIADO",
+  "canal": "WHATSAPP",
+  "idPet": 1,
+  "idTutor": 1
+}
+DELETE http://localhost:8080/lembretes/1
+
+1️⃣8️⃣ HISTÓRICO DE PESO
+POST http://localhost:8080/historico-peso
+json{
+  "dataRegistro": "2024-01-10",
+  "peso": 12.500,
+  "idPet": 1,
+  "idConsulta": 1
+}
+json{
+  "dataRegistro": "2025-04-20",
+  "peso": 11.800,
+  "idPet": 1,
+  "idConsulta": 3
+}
+json{
+  "dataRegistro": "2025-05-15",
+  "peso": 13.200,
+  "idPet": 1
+}
+GET http://localhost:8080/historico-peso?idPet=1
+GET http://localhost:8080/historico-peso/1
+DELETE http://localhost:8080/historico-peso/1
+
+1️⃣9️⃣ ALERTAS REGIONAIS — só GET
+GET http://localhost:8080/alertas-regionais
+GET http://localhost:8080/alertas-regionais/1
+GET http://localhost:8080/alertas-regionais?ativos=true
+GET http://localhost:8080/alertas-regionais?estado=SP
+GET http://localhost:8080/alertas-regionais?nivel=ALTO
+GET http://localhost:8080/alertas-regionais?idCidade=1
+
+2️⃣0️⃣ DIFERENCIAIS INTELIGENTES DO PET
+GET http://localhost:8080/pets/1/risco
+GET http://localhost:8080/pets/1/alertas
+GET http://localhost:8080/pets/1/recomendacoes

@@ -30,7 +30,7 @@ public class MedicamentoService {
         preencherMedicamento(med, dto);
         return toResponseDTO(medicamentoRepository.save(med));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("medicamentos")
     public Page<MedicamentoResponseDTO> listar(Pageable pageable) {
         return medicamentoRepository.findAll(pageable).map(this::toResponseDTO);
@@ -68,7 +68,7 @@ public class MedicamentoService {
     public void deletar(Long id) {
         medicamentoRepository.delete(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Medicamento buscarEntidade(Long id) {
         return medicamentoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Medicamento não encontrado com ID: " + id));

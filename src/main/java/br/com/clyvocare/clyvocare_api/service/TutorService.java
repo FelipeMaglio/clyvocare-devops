@@ -64,19 +64,19 @@ public class TutorService {
         return tutorRepository.findAll(pageable).map(this::toResponseDTO);
     }
 
-
+    @Transactional(readOnly = true)
     public TutorResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
 
-
+    @Transactional(readOnly = true)
     public Page<TutorResponseDTO> buscarPorNome(String nome, Pageable pageable) {
         return tutorRepository
                 .findByNomeContainingIgnoreCase(nome, pageable)
                 .map(this::toResponseDTO);
     }
 
-
+    @Transactional(readOnly = true)
     public Page<TutorResponseDTO> buscarPorEstado(String estado, Pageable pageable) {
         return tutorRepository
                 .findByEstado(estado.toUpperCase(), pageable)
@@ -129,7 +129,7 @@ public class TutorService {
         }
         tutorRepository.delete(tutor);
     }
-
+    @Transactional(readOnly = true)
     public Tutor buscarEntidade(Long id) {
         return tutorRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tutor não encontrado com ID: " + id));

@@ -31,12 +31,12 @@ public class EspecieService {
         especie.setDescricao(dto.getDescricao());
         return toResponseDTO(especieRepository.save(especie));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("especies")
     public Page<EspecieResponseDTO> listar(Pageable pageable) {
         return especieRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public EspecieResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
@@ -59,7 +59,7 @@ public class EspecieService {
     public void deletar(Long id) {
         especieRepository.delete(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Especie buscarEntidade(Long id) {
         return especieRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Espécie não encontrada com ID: " + id));

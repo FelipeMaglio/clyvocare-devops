@@ -36,16 +36,16 @@ public class TratamentoService {
         preencherTratamento(tratamento, dto);
         return toResponseDTO(tratamentoRepository.save(tratamento));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("tratamentos")
     public Page<TratamentoResponseDTO> listar(Pageable pageable) {
         return tratamentoRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public TratamentoResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<TratamentoResponseDTO> buscarPorPet(Long idPet, Pageable pageable) {
         petRepository.findById(idPet)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pet não encontrado com ID: " + idPet));
@@ -53,7 +53,7 @@ public class TratamentoService {
                 .findByPetIdPetOrderByDataInicioDesc(idPet, pageable)
                 .map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<TratamentoResponseDTO> buscarAtivos(Pageable pageable) {
         return tratamentoRepository.findByStatus("ATIVO", pageable).map(this::toResponseDTO);
     }
@@ -84,7 +84,7 @@ public class TratamentoService {
         }
         tratamentoRepository.delete(tratamento);
     }
-
+    @Transactional(readOnly = true)
     public Tratamento buscarEntidade(Long id) {
         return tratamentoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tratamento não encontrado com ID: " + id));

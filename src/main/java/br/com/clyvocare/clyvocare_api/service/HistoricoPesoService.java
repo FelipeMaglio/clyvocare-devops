@@ -57,7 +57,7 @@ public class HistoricoPesoService {
 
         return toResponseDTO(salvo);
     }
-
+    @Transactional(readOnly = true)
     public Page<HistoricoPesoResponseDTO> buscarPorPet(Long idPet, Pageable pageable) {
         petRepository.findById(idPet)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pet não encontrado com ID: " + idPet));
@@ -65,7 +65,7 @@ public class HistoricoPesoService {
                 .findByPetIdPetOrderByDataRegistroDesc(idPet, pageable)
                 .map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public HistoricoPesoResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
@@ -74,7 +74,7 @@ public class HistoricoPesoService {
     public void deletar(Long id) {
         historicoPesoRepository.delete(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     private HistoricoPeso buscarEntidade(Long id) {
         return historicoPesoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Registro de peso não encontrado com ID: " + id));

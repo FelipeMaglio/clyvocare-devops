@@ -33,24 +33,24 @@ public class ClinicaService {
         preencherClinica(clinica, dto);
         return toResponseDTO(clinicaRepository.save(clinica));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("clinicas")
     public Page<ClinicaResponseDTO> listar(Pageable pageable) {
         return clinicaRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public ClinicaResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<ClinicaResponseDTO> buscarPorNome(String nome, Pageable pageable) {
         return clinicaRepository.findByNomeContainingIgnoreCase(nome, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<ClinicaResponseDTO> buscarPorPlano(String plano, Pageable pageable) {
         return clinicaRepository.findByPlanoAssinatura(plano.toUpperCase(), pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<ClinicaResponseDTO> buscarPorEstado(String estado, Pageable pageable) {
         return clinicaRepository.findByEstado(estado.toUpperCase(), pageable).map(this::toResponseDTO);
     }
@@ -77,7 +77,7 @@ public class ClinicaService {
         }
         clinicaRepository.delete(clinica);
     }
-
+    @Transactional(readOnly = true)
     public Clinica buscarEntidade(Long id) {
         return clinicaRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Clínica não encontrada com ID: " + id));

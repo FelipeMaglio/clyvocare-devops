@@ -38,31 +38,31 @@ public class ExameService {
         preencherExame(exame, dto);
         return toResponseDTO(exameRepository.save(exame));
     }
-
+    @Transactional(readOnly = true)
     @Cacheable("exames")
     public Page<ExameResponseDTO> listar(Pageable pageable) {
         return exameRepository.findAll(pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public ExameResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Page<ExameResponseDTO> buscarPorPet(Long idPet, Pageable pageable) {
         petRepository.findById(idPet)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pet não encontrado com ID: " + idPet));
         return exameRepository.findByPetIdPetOrderByDataSolicitacaoDesc(idPet, pageable)
                 .map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<ExameResponseDTO> buscarPorTipo(String tipo, Pageable pageable) {
         return exameRepository.findByTipoExameContainingIgnoreCase(tipo, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<ExameResponseDTO> buscarPorConsulta(Long idConsulta, Pageable pageable) {
         return exameRepository.findByConsultaIdConsulta(idConsulta, pageable).map(this::toResponseDTO);
     }
-
+    @Transactional(readOnly = true)
     public Page<ExameResponseDTO> buscarSemResultado(Pageable pageable) {
         return exameRepository.findByDataResultadoIsNull(pageable).map(this::toResponseDTO);
     }
@@ -84,7 +84,7 @@ public class ExameService {
     public void deletar(Long id) {
         exameRepository.delete(buscarEntidade(id));
     }
-
+    @Transactional(readOnly = true)
     public Exame buscarEntidade(Long id) {
         return exameRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Exame não encontrado com ID: " + id));
