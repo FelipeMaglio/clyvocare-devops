@@ -197,6 +197,92 @@ O processo leva aproximadamente:
 15 minutos
 ```
 
+---
+
+# ✅ Evidências do funcionamento da infraestrutura
+
+Após executar o `deploy.sh`, rode os comandos abaixo para validar que toda a infraestrutura foi criada corretamente.
+
+---
+
+## 🐳 Evidência 1 — Containers rodando em background
+
+```bash
+az vm run-command invoke \
+--resource-group rg-clyvocare \
+--name vm-clyvocare \
+--command-id RunShellScript \
+--scripts 'cd /home/azureuser/clyvocare-devops && sudo docker compose ps'
+```
+
+### Resultado esperado
+
+Os dois containers devem aparecer com status:
+
+```text
+Up
+```
+
+---
+
+## 👤 Evidência 2 — Usuário não-root
+
+```bash
+az vm run-command invoke \
+--resource-group rg-clyvocare \
+--name vm-clyvocare \
+--command-id RunShellScript \
+--scripts 'sudo docker exec clyvocare-api whoami'
+```
+
+### Resultado esperado
+
+```text
+appuser
+```
+
+---
+
+## 💾 Evidência 3 — Volume nomeado
+
+```bash
+az vm run-command invoke \
+--resource-group rg-clyvocare \
+--name vm-clyvocare \
+--command-id RunShellScript \
+--scripts 'sudo docker volume ls'
+```
+
+### Resultado esperado
+
+```text
+clyvocare-devops_oracle-data
+```
+
+---
+
+## 📜 Evidência 4 — Logs da aplicação funcionando
+
+```bash
+az vm run-command invoke \
+--resource-group rg-clyvocare \
+--name vm-clyvocare \
+--command-id RunShellScript \
+--scripts 'cd /home/azureuser/clyvocare-devops && sudo docker compose logs --tail=20 app'
+```
+
+### Resultado esperado
+
+Deve aparecer algo semelhante a:
+
+```text
+Started Application in X seconds
+```
+
+Confirmando que o Spring Boot iniciou corretamente.
+
+---
+
 Após finalizar, acesse:
 
 ### Swagger
