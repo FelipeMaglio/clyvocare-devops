@@ -3,7 +3,7 @@ WORKDIR /build
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 COPY src/ ./src/
-RUN mvn package -DskipTests -B
+RUN mvn clean package spring-boot:repackage -DskipTests -B
 
 FROM eclipse-temurin:21-jre-alpine
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
