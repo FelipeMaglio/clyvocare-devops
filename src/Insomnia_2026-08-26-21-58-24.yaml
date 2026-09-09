@@ -1,0 +1,947 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: ClyvoCareSC
+meta:
+  id: wrk_c8d25e6bc97344bb83adfae3f1d75fcd
+  created: 1787956697922
+  modified: 1787956697922
+  description: ""
+collection:
+  - url: http://localhost:8080/api/species
+    name: /api/species Teste Security return 401
+    meta:
+      id: req_e99b793749a94b139aacb06af605ac54
+      created: 1787787493709
+      modified: 1787787569120
+      isPrivate: false
+      description: ""
+      sortKey: -1787787493709
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/auth/register/veterinarian
+    name: Cadastrar um veterinário
+    meta:
+      id: req_d8ef82e2d54c44298e9e42d6ec404e47
+      created: 1787787595342
+      modified: 1787957906300
+      isPrivate: false
+      description: ""
+      sortKey: -1787787595342
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "username": "dra.maria",
+          "password": "senha1234",
+          "name": "Maria Souza",
+          "licenseNumber": "CRMV-SP-98765",
+          "specialty": "Clínica geral"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/auth/register/owner
+    name: Cadastrar um tutor
+    meta:
+      id: req_9ce5a6dd73834775b19b7850a4689913
+      created: 1787787759400
+      modified: 1787957127234
+      isPrivate: false
+      description: ""
+      sortKey: -1787787759400
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "username": "debora.tutor",
+          "password": "senha123",
+          "name": "João Silva",
+          "phone": "11999998888",
+          "document": "12345678901"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/auth/login
+    name: Login como veterinário
+    meta:
+      id: req_ae9878f0f4864dc29aa822691a2fc600
+      created: 1787787818435
+      modified: 1787957939007
+      isPrivate: false
+      description: ""
+      sortKey: -1787787818435
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{ "username": "dra.maria", "password": "senha1234" }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3NzkxNDYwLCJleHAiOjE3ODc4Nzc4NjB9.5o58KKUGewzeF9SLn16Ow7ntCVAnAmlm8jJYFtflPioBE9SFDfeYvjKdsp0-3OPreOlG6N9NApsAtYhBaGvCYg
+      prefix: ""
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/auth/login
+    name: Login como tutor
+    meta:
+      id: req_ea24ebe467f748da92350c0f4d130f52
+      created: 1787787859093
+      modified: 1787791372791
+      isPrivate: false
+      description: ""
+      sortKey: -1787787859093
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{ "username": "joao.tutor", "password": "senha123" }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnR1dG9yIiwiaWF0IjoxNzg3Nzg3ODg0LCJleHAiOjE3ODc4NzQyODR9.burB_9zDsjgwhtIn_gFvJGN2fLYWdUvq6v9GhLeuV5jeq3hAFY8ZU5TDOGAv1TU0NW6DIWOwfPcGpTNmJW9Qlg
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/auth/login
+    name: Testar credencial errada
+    meta:
+      id: req_61da99fdbc7148a0abe7e00dd408ba29
+      created: 1787787902866
+      modified: 1787787930702
+      isPrivate: false
+      description: ""
+      sortKey: -1787787902866
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{ "username": "joao.tutor", "password": "senhaerrada" }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/catalog-items
+    name: Tutor tentando cadastrar item de catálogo
+    meta:
+      id: req_978290cd2b1f486b810a893c646203c1
+      created: 1787787945157
+      modified: 1787787974480
+      isPrivate: false
+      description: ""
+      sortKey: -1787787945157
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "V10",
+          "type": "VACCINE",
+          "boosterIntervalDays": 365
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnR1dG9yIiwiaWF0IjoxNzg3Nzg3ODg0LCJleHAiOjE3ODc4NzQyODR9.burB_9zDsjgwhtIn_gFvJGN2fLYWdUvq6v9GhLeuV5jeq3hAFY8ZU5TDOGAv1TU0NW6DIWOwfPcGpTNmJW9Qlg
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/catalog-items
+    name: Veterinário cadastrando item de catálogo
+    meta:
+      id: req_8b0ccd6ac3f44f57aa50627535c8bf42
+      created: 1787787983476
+      modified: 1787790519292
+      isPrivate: false
+      description: ""
+      sortKey: -1787787983476
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "V10",
+          "manufacturer": "Zoetis",
+          "type": "VACCINE",
+          "diseasesPrevented": "Cinomose, parvovirose, leptospirose",
+          "boosterIntervalDays": 365
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3Nzg3ODQyLCJleHAiOjE3ODc4NzQyNDJ9.aZpURvR0C6NcssdWSHNthD5f2PtzJ2x1MTe7fuA9HUpETE0u-U0RRz0_eB7CZaAw4w0fUrzkjrIrvTyabhYMTQ
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/pets
+    name: Veterinário tentando criar um Pet
+    meta:
+      id: req_0af07e7d0c984ce99a9a2297c7fc12cb
+      created: 1787788027598
+      modified: 1787788046415
+      isPrivate: false
+      description: ""
+      sortKey: -1787788027598
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{ "name": "Rex", "ownerId": 1, "speciesId": 1 }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3Nzg3ODQyLCJleHAiOjE3ODc4NzQyNDJ9.aZpURvR0C6NcssdWSHNthD5f2PtzJ2x1MTe7fuA9HUpETE0u-U0RRz0_eB7CZaAw4w0fUrzkjrIrvTyabhYMTQ
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/cities
+    name: Cadastro base
+    meta:
+      id: req_1e6d91a58f1340a690665ab095759c81
+      created: 1787788053627
+      modified: 1787790452723
+      isPrivate: false
+      description: ""
+      sortKey: -1787788053627
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{ "name": "São Paulo", "state": "SP", "region": "Sudeste" }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3Nzg3ODQyLCJleHAiOjE3ODc4NzQyNDJ9.aZpURvR0C6NcssdWSHNthD5f2PtzJ2x1MTe7fuA9HUpETE0u-U0RRz0_eB7CZaAw4w0fUrzkjrIrvTyabhYMTQ
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: " http://localhost:8080/api/species"
+    name: Criar espécie
+    meta:
+      id: req_4ba57f958cba4e579bf6a7d0d743c087
+      created: 1787790416835
+      modified: 1787790478060
+      isPrivate: false
+      description: ""
+      sortKey: -1787790416835
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{ "name": "Cão", "description": "Canis familiaris" }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3NzkwMzkwLCJleHAiOjE3ODc4NzY3OTB9.OMv7lvc1xXemEDUQgo9_Fs2P-7806NYKAdpEK67CJk8WW6Az_dBZJ6RyMvYvDb0mbqJVyU4MRlyYwaQtrPOoFw
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/catalog-items
+    name: Criar item de catálogo do tipo MEDICATION
+    meta:
+      id: req_2bee794803ee4222b942331197d851c9
+      created: 1787790484557
+      modified: 1787790523796
+      isPrivate: false
+      description: ""
+      sortKey: -1787790484557
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Amoxicilina 250mg",
+          "manufacturer": "Vetnil",
+          "type": "MEDICATION",
+          "activeIngredient": "Amoxicilina"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3NzkwMzkwLCJleHAiOjE3ODc4NzY3OTB9.OMv7lvc1xXemEDUQgo9_Fs2P-7806NYKAdpEK67CJk8WW6Az_dBZJ6RyMvYvDb0mbqJVyU4MRlyYwaQtrPOoFw
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/clinics
+    name: Criar clínica
+    meta:
+      id: req_2137b6fd8387479bad761161cb274be0
+      created: 1787790529654
+      modified: 1787790999747
+      isPrivate: false
+      description: ""
+      sortKey: -1787790529654
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Clínica Pet Saúde",
+          "taxId": "12345678000199",
+          "phone": "1133334444",
+          "email": "contato@petsaude.com",
+          "address": "Rua das Flores, 100"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3NzkwOTg3LCJleHAiOjE3ODc4NzczODd9.rp1bsnJIlAlX4KhYg6suexRqbVj3tfeT9SSB_tncrHQkoRIPOYHizLJ4j018ihdijNBau5x42sbJihevqUpikQ
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/pets
+    name: Cadastrar pet
+    meta:
+      id: req_bc772a908f3a4fefa9f39baff1bfcf57
+      created: 1787790663708
+      modified: 1787790693085
+      isPrivate: false
+      description: ""
+      sortKey: -1787790663708
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Rex",
+          "birthDate": "2022-03-15",
+          "sex": "MALE",
+          "currentWeight": 12.5,
+          "breed": "Labrador",
+          "size": "MEDIUM",
+          "ownerId": 1,
+          "speciesId": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnR1dG9yIiwiaWF0IjoxNzg3Nzg3ODg0LCJleHAiOjE3ODc4NzQyODR9.burB_9zDsjgwhtIn_gFvJGN2fLYWdUvq6v9GhLeuV5jeq3hAFY8ZU5TDOGAv1TU0NW6DIWOwfPcGpTNmJW9Qlg
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/owners/1/pets
+    name: Listar pets do tutor
+    meta:
+      id: req_d4f860fc650944e192de952bb0a86aa3
+      created: 1787790717092
+      modified: 1787791394371
+      isPrivate: false
+      description: ""
+      sortKey: -1787790717092
+    method: GET
+    body:
+      mimeType: application/json
+      text: ""
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnR1dG9yIiwiaWF0IjoxNzg3NzkxMzg0LCJleHAiOjE3ODc4Nzc3ODR9.bd0zYRrSyDpuWf_fbS46DKZpTIrRzDFrgkKF9xEbh19lML1kYJFT6qtYsQtA_rpgHeqpEWZnpwj8IdTd-qdZIw
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/owners/1/pets
+    name: Buscar pet por id
+    meta:
+      id: req_bcbad870be8c4d27805dac133f0c736c
+      created: 1787791068172
+      modified: 1787958256481
+      isPrivate: false
+      description: ""
+      sortKey: -1787791068172
+    method: GET
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnR1dG9yIiwiaWF0IjoxNzg3NzkxMzg0LCJleHAiOjE3ODc4Nzc3ODR9.bd0zYRrSyDpuWf_fbS46DKZpTIrRzDFrgkKF9xEbh19lML1kYJFT6qtYsQtA_rpgHeqpEWZnpwj8IdTd-qdZIw
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/appointments
+    name: Agendar consulta (veterinário)
+    meta:
+      id: req_a8df209a1cae4e5f96ba23db085a7a14
+      created: 1787791445504
+      modified: 1787791523183
+      isPrivate: false
+      description: ""
+      sortKey: -1787791445504
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "appointmentDate": "2026-09-01",
+          "type": "ROUTINE",
+          "reason": "Check-up anual",
+          "petId": 1,
+          "veterinarianId": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3NzkxNDYwLCJleHAiOjE3ODc4Nzc4NjB9.5o58KKUGewzeF9SLn16Ow7ntCVAnAmlm8jJYFtflPioBE9SFDfeYvjKdsp0-3OPreOlG6N9NApsAtYhBaGvCYg
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/appointments/1/complete
+    name: Concluir a consulta
+    meta:
+      id: req_d08831401afd4652879537b01a0289ae
+      created: 1787791475101
+      modified: 1787791538019
+      isPrivate: false
+      description: ""
+      sortKey: -1787791475101
+    method: PATCH
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "diagnosis": "Animal saudável, sem alterações",
+          "notes": "Recomendado retorno em 15 dias",
+          "weightAtVisit": 12.8
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3NzkxNDYwLCJleHAiOjE3ODc4Nzc4NjB9.5o58KKUGewzeF9SLn16Ow7ntCVAnAmlm8jJYFtflPioBE9SFDfeYvjKdsp0-3OPreOlG6N9NApsAtYhBaGvCYg
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/owners/me/reminders
+    name: Confirmar que o Reminder foi criado sozinho
+    meta:
+      id: req_c752f770c3d7451cac4efe6dbc247530
+      created: 1787791485296
+      modified: 1787791573271
+      isPrivate: false
+      description: ""
+      sortKey: -1787791485296
+    method: GET
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnR1dG9yIiwiaWF0IjoxNzg3NzkxNTY3LCJleHAiOjE3ODc4Nzc5Njd9.hVJsF-wlyiFWofwPFlXFsyKOb_C6vR1A030K0KDn7YB-OHVS94rXe2YCz37JxbndtOgFgip8W4CXba6-9W_ObA
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/vaccinations
+    name: Aplicar vacina
+    meta:
+      id: req_23872a0c73274f279c6dd97b5123ee7d
+      created: 1787791586844
+      modified: 1787958272902
+      isPrivate: false
+      description: ""
+      sortKey: -1787791586844
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "applicationDate": "2026-08-25",
+          "batch": "LOTE-2026-07",
+          "petId": 1,
+          "catalogItemId": 1,
+          "veterinarianId": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEubWFyaWEiLCJpYXQiOjE3ODc5NTc5NDAsImV4cCI6MTc4ODA0NDM0MH0.Fal_-vBZHm9aozPUbYPuyFc7eW8dVDHckJMHP67lUuOemMLdC9__lCUp8HZ3PYQ-5t8tgd6RG5lx8BuxvwMbeQ
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/owners/me/reminders
+    name: Confirmar o segundo Reminder automático
+    meta:
+      id: req_82982ea26115410eb3a006770be49d92
+      created: 1787791619020
+      modified: 1787791727745
+      isPrivate: false
+      description: ""
+      sortKey: -1787791619020
+    method: GET
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnR1dG9yIiwiaWF0IjoxNzg3NzkxNTY3LCJleHAiOjE3ODc4Nzc5Njd9.hVJsF-wlyiFWofwPFlXFsyKOb_C6vR1A030K0KDn7YB-OHVS94rXe2YCz37JxbndtOgFgip8W4CXba6-9W_ObA
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/vaccinations
+    name: Tentar vacinar usando um item MEDICATION
+    meta:
+      id: req_185a63c1ad4742a1aad077a9433799b3
+      created: 1787791622587
+      modified: 1787791706828
+      isPrivate: false
+      description: ""
+      sortKey: -1787791622587
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "applicationDate": "2026-08-24",
+          "petId": 1,
+          "catalogItemId": 2
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3NzkxNDYwLCJleHAiOjE3ODc4Nzc4NjB9.5o58KKUGewzeF9SLn16Ow7ntCVAnAmlm8jJYFtflPioBE9SFDfeYvjKdsp0-3OPreOlG6N9NApsAtYhBaGvCYg
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/treatments
+    name: Criar tratamento
+    meta:
+      id: req_ced6e5de3e0e406095c6820185be7a15
+      created: 1787791738450
+      modified: 1787791810967
+      isPrivate: false
+      description: ""
+      sortKey: -1787791738450
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "description": "Antibioticoterapia por infecção urinária",
+          "startDate": "2026-08-24",
+          "petId": 1,
+          "appointmentId": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3NzkxNDYwLCJleHAiOjE3ODc4Nzc4NjB9.5o58KKUGewzeF9SLn16Ow7ntCVAnAmlm8jJYFtflPioBE9SFDfeYvjKdsp0-3OPreOlG6N9NApsAtYhBaGvCYg
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/prescriptions
+    name: Criar prescrição vinculada ao tratamento
+    meta:
+      id: req_5c621ecf717d432b826e8c7f8df8ecff
+      created: 1787791767765
+      modified: 1787791830277
+      isPrivate: false
+      description: ""
+      sortKey: -1787791767765
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "dosage": "1 comprimido",
+          "frequency": "a cada 12 horas",
+          "durationDays": 10,
+          "instructions": "Administrar com alimento",
+          "treatmentId": 1,
+          "catalogItemId": 2
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEuYW5hIiwiaWF0IjoxNzg3NzkxNDYwLCJleHAiOjE3ODc4Nzc4NjB9.5o58KKUGewzeF9SLn16Ow7ntCVAnAmlm8jJYFtflPioBE9SFDfeYvjKdsp0-3OPreOlG6N9NApsAtYhBaGvCYg
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/treatments/1/complete
+    name: Concluir o tratamento
+    meta:
+      id: req_469d6c2261684f4e8c5ab3808edb1f3f
+      created: 1787791787275
+      modified: 1787958926042
+      isPrivate: false
+      description: ""
+      sortKey: -1787791787275
+    method: PATCH
+    body:
+      mimeType: application/json
+      text: ""
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEubWFyaWEiLCJpYXQiOjE3ODc5NTg4NzQsImV4cCI6MTc4ODA0NTI3NH0.tE0Iz5D7AZ7gWNTQAdjWctyBXQ8PyAH44WMUGRCF8QiMKxMkL263JiPNteCZbBYgR1swjme_F0gkP3jFvdTbiA
+      prefix: ""
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/exams
+    name: Registrar exame
+    meta:
+      id: req_3ff8688bd14b499fbdcd422dd62c0dfd
+      created: 1787958927298
+      modified: 1787959021064
+      isPrivate: false
+      description: ""
+      sortKey: -1787958927298
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "examType": "Hemograma completo",
+          "requestDate": "2026-08-24",
+          "petId": 1,
+          "appointmentId": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEubWFyaWEiLCJpYXQiOjE3ODc5NTg4NzQsImV4cCI6MTc4ODA0NTI3NH0.tE0Iz5D7AZ7gWNTQAdjWctyBXQ8PyAH44WMUGRCF8QiMKxMkL263JiPNteCZbBYgR1swjme_F0gkP3jFvdTbiA
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/reminders/1/sent
+    name: Marcar lembrete como enviado
+    meta:
+      id: req_41c10ea5c80d435db16c41c11c9fdd1f
+      created: 1787958987131
+      modified: 1787959029972
+      isPrivate: false
+      description: ""
+      sortKey: -1787958987131
+    method: PATCH
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEubWFyaWEiLCJpYXQiOjE3ODc5NTg4NzQsImV4cCI6MTc4ODA0NTI3NH0.tE0Iz5D7AZ7gWNTQAdjWctyBXQ8PyAH44WMUGRCF8QiMKxMkL263JiPNteCZbBYgR1swjme_F0gkP3jFvdTbiA
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/reminders/1/confirmed
+    name: Marcar lembrete como confirmado
+    meta:
+      id: req_afa43f5f099243baa16ad890ec9ebb02
+      created: 1787959044835
+      modified: 1787959078721
+      isPrivate: false
+      description: ""
+      sortKey: -1787959044835
+    method: PATCH
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEubWFyaWEiLCJpYXQiOjE3ODc5NTg4NzQsImV4cCI6MTc4ODA0NTI3NH0.tE0Iz5D7AZ7gWNTQAdjWctyBXQ8PyAH44WMUGRCF8QiMKxMkL263JiPNteCZbBYgR1swjme_F0gkP3jFvdTbiA
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/auth/register/owner
+    name: " Documento com formato inválido"
+    meta:
+      id: req_9c3f2c6e50844ff4aae8e47bedb5ddc1
+      created: 1787959081453
+      modified: 1787959121132
+      isPrivate: false
+      description: ""
+      sortKey: -1787959081453
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "username": "teste.invalido",
+          "password": "senha123",
+          "name": "Teste",
+          "phone": "11999999999",
+          "document": "123"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEubWFyaWEiLCJpYXQiOjE3ODc5NTg4NzQsImV4cCI6MTc4ODA0NTI3NH0.tE0Iz5D7AZ7gWNTQAdjWctyBXQ8PyAH44WMUGRCF8QiMKxMkL263JiPNteCZbBYgR1swjme_F0gkP3jFvdTbiA
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/species
+    name: Campo obrigatório vazio
+    meta:
+      id: req_fce27cf7236b4b8bb93c24037f23bfa4
+      created: 1787959136293
+      modified: 1787959174254
+      isPrivate: false
+      description: ""
+      sortKey: -1787959136293
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{ "name": "" }'
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEubWFyaWEiLCJpYXQiOjE3ODc5NTg4NzQsImV4cCI6MTc4ODA0NTI3NH0.tE0Iz5D7AZ7gWNTQAdjWctyBXQ8PyAH44WMUGRCF8QiMKxMkL263JiPNteCZbBYgR1swjme_F0gkP3jFvdTbiA
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/auth/register/owner
+    name: New Request
+    meta:
+      id: req_a931b3f016714ca49ffd248a3c6eb493
+      created: 1787959185475
+      modified: 1787959214140
+      isPrivate: false
+      description: ""
+      sortKey: -1787959185475
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "username": "joao.tutor",
+          "password": "outrasenha",
+          "name": "Outro João",
+          "phone": "11888887777",
+          "document": "98765432100"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkcmEubWFyaWEiLCJpYXQiOjE3ODc5NTg4NzQsImV4cCI6MTc4ODA0NTI3NH0.tE0Iz5D7AZ7gWNTQAdjWctyBXQ8PyAH44WMUGRCF8QiMKxMkL263JiPNteCZbBYgR1swjme_F0gkP3jFvdTbiA
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/api/pets/999
+    name: Buscar recurso inexistente
+    meta:
+      id: req_b797def1417c4a77b8075d9500afa98c
+      created: 1787959217796
+      modified: 1787959269019
+      isPrivate: false
+      description: ""
+      sortKey: -1787959217796
+    method: GET
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2FvLnR1dG9yIiwiaWF0IjoxNzg3OTU5MjUxLCJleHAiOjE3ODgwNDU2NTF9.Mzoz209A8d_WYQ8WJXqjsFIWg8_cyCqJ64CVRmOaxQqtOeV8W6ErtJPIZKWNEQGEZrQfFEu6BzDc2dskjKXBEQ
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_e0d7d50c962acef675a8ba5c3d4c0c1641d0a4e5
+    created: 1787956697924
+    modified: 1787956697924
+environments:
+  name: Base Environment
+  meta:
+    id: env_e0d7d50c962acef675a8ba5c3d4c0c1641d0a4e5
+    created: 1787956697923
+    modified: 1787956697923
+    isPrivate: false

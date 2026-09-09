@@ -1,14 +1,22 @@
-FROM maven:3.9-eclipse-temurin-21 AS builder
+# ===== Etapa de build =====
+FROM eclipse-temurin:25-jdk AS builder
 WORKDIR /build
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
-COPY src/ ./src/
-RUN mvn clean package spring-boot:repackage -DskipTests -B
 
-FROM eclipse-temurin:21-jre-alpine
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+# Copia primeiro só o necessário pro cache de dependências
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle settings.gradle ./
+RUN chmod +x gradlew
+
+# Copia o código-fonte e builda o jar (sem rodar os testes)
+COPY src ./src
+RUN ./gradlew clean bootJar --no-daemon -x test
+
+# ===== Etapa final (imagem enxuta, usuário não-root) =====
+FROM eclipse-temurin:25-jre
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 WORKDIR /app
-COPY --from=builder /build/target/*.jar app.jar
+COPY --from=builder /build/build/libs/*.jar app.jar
 RUN chown appuser:appgroup app.jar
 USER appuser
 EXPOSE 8080

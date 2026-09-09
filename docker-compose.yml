@@ -1,5 +1,4 @@
 services:
-
   oracle:
     image: gvenzl/oracle-xe:21-slim
     container_name: oracle-db
@@ -32,8 +31,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:oracle:thin:@oracle:1521/XEPDB1
       SPRING_DATASOURCE_USERNAME: clyvocare
       SPRING_DATASOURCE_PASSWORD: Clyvo@2026
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      # O schema agora é controlado pelo Flyway - Hibernate só valida
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.OracleDialect
+      SPRING_FLYWAY_ENABLED: "true"
+      APP_JWT_SECRET: "troque-este-segredo-por-um-valor-forte-e-unico"
+      APP_JWT_EXPIRATION_MS: "86400000"
     ports:
       - "8080:8080"
     depends_on:

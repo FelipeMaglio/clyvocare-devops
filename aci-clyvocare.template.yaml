@@ -1,0 +1,63 @@
+apiVersion: 2021-09-01
+location: eastus
+name: aci-clyvocare
+properties:
+  containers:
+    - name: oracle-db
+      properties:
+        image: gvenzl/oracle-xe:21-slim
+        resources:
+          requests:
+            cpu: 2
+            memoryInGb: 4
+        environmentVariables:
+          - name: ORACLE_PASSWORD
+            secureValue: "Oracle@2026"
+          - name: APP_USER
+            value: "clyvocare"
+          - name: APP_USER_PASSWORD
+            secureValue: "Clyvo@2026"
+          - name: ORACLE_MEM
+            value: "3000"
+        ports:
+          - port: 1521
+    - name: clyvocare-api
+      properties:
+        image: <ACR_SERVER>/clyvocare-api:v1
+        resources:
+          requests:
+            cpu: 1
+            memoryInGb: 1.5
+        environmentVariables:
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:oracle:thin:@localhost:1521/XEPDB1"
+          - name: SPRING_DATASOURCE_USERNAME
+            value: "clyvocare"
+          - name: SPRING_DATASOURCE_PASSWORD
+            secureValue: "Clyvo@2026"
+          - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+            value: "validate"
+          - name: SPRING_JPA_DATABASE_PLATFORM
+            value: "org.hibernate.dialect.OracleDialect"
+          - name: SPRING_FLYWAY_ENABLED
+            value: "true"
+          - name: APP_JWT_SECRET
+            secureValue: "troque-este-segredo-por-um-valor-forte-e-unico"
+          - name: APP_JWT_EXPIRATION_MS
+            value: "86400000"
+        ports:
+          - port: 8080
+  osType: Linux
+  restartPolicy: OnFailure
+  ipAddress:
+    type: Public
+    dnsNameLabel: <DNS_LABEL>
+    ports:
+      - protocol: tcp
+        port: 8080
+      - protocol: tcp
+        port: 1521
+imageRegistryCredentials:
+  - server: <ACR_SERVER>
+    username: <ACR_USER>
+    password: <ACR_PASS>
