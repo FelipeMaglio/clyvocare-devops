@@ -34,6 +34,13 @@ echo "$ACR_PASS" | docker login "$ACR_SERVER" -u "$ACR_USER" --password-stdin
 docker tag "$IMAGE_NAME:$IMAGE_TAG" "$ACR_SERVER/$IMAGE_NAME:$IMAGE_TAG"
 docker push "$ACR_SERVER/$IMAGE_NAME:$IMAGE_TAG"
 
+echo ">> 4b) Espelhando a imagem do Oracle para o ACR (evita rate limit do Docker Hub)..."
+az acr import \
+  --name "$ACR_NAME" \
+  --source docker.io/gvenzl/oracle-xe:21-slim \
+  --image oracle-xe:21-slim \
+  --force
+
 echo ">> 5) Gerando o arquivo aci-clyvocare.yaml a partir do template (com senhas geradas na hora)..."
 sed \
   -e "s#<ACR_SERVER>#$ACR_SERVER#g" \
@@ -43,6 +50,7 @@ sed \
   -e "s#<DB_ADMIN_PASSWORD>#$DB_ADMIN_PASSWORD#g" \
   -e "s#<DB_APP_PASSWORD>#$DB_APP_PASSWORD#g" \
   -e "s#<JWT_SECRET>#$JWT_SECRET#g" \
+  -e "s#gvenzl/oracle-xe:21-slim#$ACR_SERVER/oracle-xe:21-slim#g" \
   aci-clyvocare.template.yaml > aci-clyvocare.yaml
 
 # aci-clyvocare.yaml (com as senhas reais) fica só localmente - nunca commitar
