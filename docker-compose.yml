@@ -4,9 +4,9 @@ services:
     container_name: oracle-db
     shm_size: 1g
     environment:
-      ORACLE_PASSWORD: Oracle@2026
+      ORACLE_PASSWORD: ${DB_ADMIN_PASSWORD}
       APP_USER: clyvocare
-      APP_USER_PASSWORD: Clyvo@2026
+      APP_USER_PASSWORD: ${DB_APP_PASSWORD}
       ORACLE_MEM: 750
     ports:
       - "1521:1521"
@@ -30,12 +30,12 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:oracle:thin:@oracle:1521/XEPDB1
       SPRING_DATASOURCE_USERNAME: clyvocare
-      SPRING_DATASOURCE_PASSWORD: Clyvo@2026
+      SPRING_DATASOURCE_PASSWORD: ${DB_APP_PASSWORD}
       # O schema agora é controlado pelo Flyway - Hibernate só valida
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.OracleDialect
       SPRING_FLYWAY_ENABLED: "true"
-      APP_JWT_SECRET: "troque-este-segredo-por-um-valor-forte-e-unico"
+      APP_JWT_SECRET: ${JWT_SECRET}
       APP_JWT_EXPIRATION_MS: "86400000"
     ports:
       - "8080:8080"

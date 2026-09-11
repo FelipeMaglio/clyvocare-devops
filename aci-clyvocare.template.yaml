@@ -12,11 +12,11 @@ properties:
             memoryInGb: 4
         environmentVariables:
           - name: ORACLE_PASSWORD
-            secureValue: "Oracle@2026"
+            secureValue: "<DB_ADMIN_PASSWORD>"
           - name: APP_USER
             value: "clyvocare"
           - name: APP_USER_PASSWORD
-            secureValue: "Clyvo@2026"
+            secureValue: "<DB_APP_PASSWORD>"
           - name: ORACLE_MEM
             value: "3000"
         ports:
@@ -34,7 +34,7 @@ properties:
           - name: SPRING_DATASOURCE_USERNAME
             value: "clyvocare"
           - name: SPRING_DATASOURCE_PASSWORD
-            secureValue: "Clyvo@2026"
+            secureValue: "<DB_APP_PASSWORD>"
           - name: SPRING_JPA_HIBERNATE_DDL_AUTO
             value: "validate"
           - name: SPRING_JPA_DATABASE_PLATFORM
@@ -42,7 +42,7 @@ properties:
           - name: SPRING_FLYWAY_ENABLED
             value: "true"
           - name: APP_JWT_SECRET
-            secureValue: "troque-este-segredo-por-um-valor-forte-e-unico"
+            secureValue: "<JWT_SECRET>"
           - name: APP_JWT_EXPIRATION_MS
             value: "86400000"
         ports:
