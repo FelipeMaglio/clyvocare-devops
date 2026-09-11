@@ -41,17 +41,18 @@ az acr import \
   --image oracle-xe:21-slim \
   --force
 
+echo ">> 4c) Habilitando pull anonimo no ACR (evita bloqueio de autenticacao admin do ACI nesta assinatura)..."
+az acr update --name "$ACR_NAME" --anonymous-pull-enabled true
+
 echo ">> 5) Gerando o arquivo aci-clyvocare.yaml a partir do template (com senhas geradas na hora)..."
 sed \
   -e "s#<ACR_SERVER>#$ACR_SERVER#g" \
-  -e "s#<ACR_USER>#$ACR_USER#g" \
-  -e "s#<ACR_PASS>#$ACR_PASS#g" \
   -e "s#<DNS_LABEL>#$DNS_LABEL#g" \
   -e "s#<DB_ADMIN_PASSWORD>#$DB_ADMIN_PASSWORD#g" \
   -e "s#<DB_APP_PASSWORD>#$DB_APP_PASSWORD#g" \
   -e "s#<JWT_SECRET>#$JWT_SECRET#g" \
   -e "s#gvenzl/oracle-xe:21-slim#$ACR_SERVER/oracle-xe:21-slim#g" \
-  aci-clyvocare.template.yaml > aci-clyvocare.yaml
+  aci-clyvocare.template.yaml | sed '/imageRegistryCredentials:/,$d' > aci-clyvocare.yaml
 
 # aci-clyvocare.yaml (com as senhas reais) fica só localmente - nunca commitar
 if [ -f .gitignore ] && ! grep -q "^aci-clyvocare.yaml$" .gitignore; then
@@ -61,10 +62,10 @@ elif [ ! -f .gitignore ]; then
 fi
 
 echo ">> 6) Criando o Container Group no ACI (App + Banco Oracle no mesmo grupo)..."
-echo "   Aguardando 30s para as credenciais do ACR propagarem..."
-sleep 30
+echo "   Aguardando 20s para o registro/imagens propagarem..."
+sleep 20
 
-MAX_RETRIES=5
+MAX_RETRIES=3
 for i in $(seq 1 $MAX_RETRIES); do
   if az container create --resource-group "$RG" --file aci-clyvocare.yaml; then
     echo "   Container Group criado com sucesso."
@@ -74,10 +75,9 @@ for i in $(seq 1 $MAX_RETRIES); do
     echo "   Falha ao criar o Container Group depois de $MAX_RETRIES tentativas."
     exit 1
   fi
-  echo "   Tentativa $i falhou (credenciais do ACR provavelmente ainda propagando)."
-  echo "   Aguardando 30s antes de tentar de novo..."
+  echo "   Tentativa $i falhou. Aguardando 20s antes de tentar de novo..."
   az container delete --resource-group "$RG" --name "$ACI_NAME" --yes >/dev/null 2>&1 || true
-  sleep 30
+  sleep 20
 done
 
 echo ">> 7) Aguardando o Oracle inicializar (pode levar de 2 a 4 minutos)..."
