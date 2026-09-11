@@ -82,6 +82,7 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/catalog-items/**", "/api/species/**", "/api/cities/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/catalog-items/**").hasAnyRole("VETERINARIAN", "CLINIC_ADMIN")
