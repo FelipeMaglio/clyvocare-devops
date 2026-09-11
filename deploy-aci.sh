@@ -11,9 +11,9 @@ ACI_NAME="aci-clyvocare"
 DNS_LABEL="clyvocare-$RANDOM"       # também precisa ser único globalmente
 
 # Senhas geradas na hora - nunca ficam salvas em nenhum arquivo do repo
-DB_ADMIN_PASSWORD="Cly$(openssl rand -hex 6)Aa1"
-DB_APP_PASSWORD="App$(openssl rand -hex 6)Bb2"
-JWT_SECRET=$(openssl rand -base64 48 | tr -d '\n')
+DB_ADMIN_PASSWORD="Cly$(openssl rand -hex 6 | tr -d '\r\n')Aa1"
+DB_APP_PASSWORD="App$(openssl rand -hex 6 | tr -d '\r\n')Bb2"
+JWT_SECRET=$(openssl rand -base64 48 | tr -d '\r\n')
 # ===========================================================
 
 echo ">> 1) Criando o Resource Group..."
