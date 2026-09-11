@@ -20,7 +20,7 @@ echo ">> 1) Criando o Resource Group..."
 az group create --name "$RG" --location "$LOCATION"
 
 echo ">> 2) Criando o Azure Container Registry (ACR)..."
-az acr create --resource-group "$RG" --name "$ACR_NAME" --sku Basic --admin-enabled true
+az acr create --resource-group "$RG" --name "$ACR_NAME" --sku Standard --admin-enabled true
 
 echo ">> 3) Buildando a imagem localmente com Docker..."
 docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
