@@ -22,13 +22,17 @@ az group create --name "$RG" --location "$LOCATION"
 echo ">> 2) Criando o Azure Container Registry (ACR)..."
 az acr create --resource-group "$RG" --name "$ACR_NAME" --sku Basic --admin-enabled true
 
-echo ">> 3) Buildando e enviando a imagem para o ACR (build feito na nuvem, sem precisar de Docker local)..."
-az acr build --registry "$ACR_NAME" --image "$IMAGE_NAME:$IMAGE_TAG" .
+echo ">> 3) Buildando a imagem localmente com Docker..."
+docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
 
-echo ">> 4) Obtendo credenciais do ACR..."
+echo ">> 4) Obtendo credenciais do ACR e enviando a imagem..."
 ACR_SERVER=$(az acr show --name "$ACR_NAME" --query loginServer -o tsv)
 ACR_USER=$(az acr credential show --name "$ACR_NAME" --query username -o tsv)
 ACR_PASS=$(az acr credential show --name "$ACR_NAME" --query "passwords[0].value" -o tsv)
+
+echo "$ACR_PASS" | docker login "$ACR_SERVER" -u "$ACR_USER" --password-stdin
+docker tag "$IMAGE_NAME:$IMAGE_TAG" "$ACR_SERVER/$IMAGE_NAME:$IMAGE_TAG"
+docker push "$ACR_SERVER/$IMAGE_NAME:$IMAGE_TAG"
 
 echo ">> 5) Gerando o arquivo aci-clyvocare.yaml a partir do template (com senhas geradas na hora)..."
 sed \
