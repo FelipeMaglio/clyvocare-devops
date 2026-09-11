@@ -61,7 +61,24 @@ elif [ ! -f .gitignore ]; then
 fi
 
 echo ">> 6) Criando o Container Group no ACI (App + Banco Oracle no mesmo grupo)..."
-az container create --resource-group "$RG" --file aci-clyvocare.yaml
+echo "   Aguardando 30s para as credenciais do ACR propagarem..."
+sleep 30
+
+MAX_RETRIES=5
+for i in $(seq 1 $MAX_RETRIES); do
+  if az container create --resource-group "$RG" --file aci-clyvocare.yaml; then
+    echo "   Container Group criado com sucesso."
+    break
+  fi
+  if [ "$i" -eq "$MAX_RETRIES" ]; then
+    echo "   Falha ao criar o Container Group depois de $MAX_RETRIES tentativas."
+    exit 1
+  fi
+  echo "   Tentativa $i falhou (credenciais do ACR provavelmente ainda propagando)."
+  echo "   Aguardando 30s antes de tentar de novo..."
+  az container delete --resource-group "$RG" --name "$ACI_NAME" --yes >/dev/null 2>&1 || true
+  sleep 30
+done
 
 echo ">> 7) Aguardando o Oracle inicializar (pode levar de 2 a 4 minutos)..."
 sleep 150
