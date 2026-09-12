@@ -27,7 +27,7 @@ properties:
         resources:
           requests:
             cpu: 1
-            memoryInGb: 1.5
+            memoryInGb: 2.5
         environmentVariables:
           - name: SPRING_DATASOURCE_URL
             value: "jdbc:oracle:thin:@localhost:1521/XEPDB1"
