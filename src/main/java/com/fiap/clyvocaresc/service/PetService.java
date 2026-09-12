@@ -49,7 +49,6 @@ public class PetService {
 
     /** Cria um novo pet, marcando a data de cadastro como hoje e validando Owner/Species existentes. */
     @Transactional(readOnly = true)
-    public PetResponseDTO create(PetRequestDTO dto) {
         Pet pet = new Pet();
         pet.setRegisteredAt(LocalDate.now());
         apply(pet, dto);
