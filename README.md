@@ -462,4 +462,4 @@ clyvocare-devops/
 # 🔗 Links
 
 - Repositório do código-fonte: https://github.com/VitoriaMaglio/ClyvoCareSC
-- Link do vídeo: _adicionar antes da entrega_
+- Link do vídeo: https://youtu.be/dW93LktXAXY
