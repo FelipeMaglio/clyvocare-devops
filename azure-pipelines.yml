@@ -33,6 +33,7 @@ stages:
               SPRING_DATASOURCE_PASSWORD: $(DB_PASSWORD)
               DB_HOST: $(DB_HOST)
               DB_USER: $(DB_USER)
+              DB_USERNAME: $(DB_USER)
               DB_PASSWORD: $(DB_PASSWORD)
               JWT_SECRET: $(JWT_SECRET)
           - task: PublishTestResults@2
