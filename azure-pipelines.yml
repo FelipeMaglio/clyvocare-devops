@@ -74,18 +74,55 @@ stages:
             deploy:
               steps:
                 - task: AzureCLI@2
+                  displayName: Deploy no ACI via YAML
                   inputs:
                     azureSubscription: sc-azure
                     scriptType: ps
                     scriptLocation: inlineScript
                     failOnStandardError: false
                     inlineScript: |
+                      $yaml = @'
+                      apiVersion: 2021-10-01
+                      location: eastus
+                      name: aci-clyvocare-api
+                      type: Microsoft.ContainerInstance/containerGroups
+                      properties:
+                        osType: Linux
+                        containers:
+                        - name: clyvocare-api
+                          properties:
+                            image: $(ACR).azurecr.io/$(IMAGE):$(Build.BuildId)
+                            ports:
+                            - port: 8080
+                            resources:
+                              requests:
+                                cpu: 1
+                                memoryInGb: 2
+                            environmentVariables:
+                            - name: DB_HOST
+                              value: $(DB_HOST)
+                            - name: DB_USER
+                              value: $(DB_USER)
+                            - name: DB_USERNAME
+                              value: $(DB_USER)
+                            - name: SPRING_DATASOURCE_URL
+                              value: jdbc:oracle:thin:@//$(DB_HOST):1521/XEPDB1
+                            - name: SPRING_DATASOURCE_USERNAME
+                              value: $(DB_USER)
+                            - name: DB_PASSWORD
+                              secureValue: $(DB_PASSWORD)
+                            - name: SPRING_DATASOURCE_PASSWORD
+                              secureValue: $(DB_PASSWORD)
+                            - name: JWT_SECRET
+                              secureValue: $(JWT_SECRET)
+                        ipAddress:
+                          type: Public
+                          dnsNameLabel: clyvocare-api-563512
+                          ports:
+                          - protocol: tcp
+                            port: 8080
+                      '@
+                      Set-Content -Path aci-api.yaml -Value $yaml -Encoding utf8
                       az container delete -g $(RG) -n aci-clyvocare-api --yes
-                      az container create -g $(RG) -n aci-clyvocare-api `
-                        --location eastus `
-                        --image $(ACR).azurecr.io/$(IMAGE):$(Build.BuildId) `
-                        --os-type Linux --cpu 1 --memory 2 `
-                        --ports 8080 --ip-address Public `
-                        --dns-name-label clyvocare-api-563512 `
-                        --secure-environment-variables DB_PASSWORD=$(DB_PASSWORD) SPRING_DATASOURCE_PASSWORD=$(DB_PASSWORD) JWT_SECRET=$(JWT_SECRET) `
-                        --environment-variables DB_HOST=$(DB_HOST) DB_USER=$(DB_USER) SPRING_DATASOURCE_URL=jdbc:oracle:thin:@//$(DB_HOST):1521/XEPDB1 SPRING_DATASOURCE_USERNAME=$(DB_USER)
+                      az container create -g $(RG) --file aci-api.yaml
+                      Remove-Item aci-api.yaml -Force
