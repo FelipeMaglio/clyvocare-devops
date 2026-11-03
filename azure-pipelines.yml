@@ -4,7 +4,7 @@ trigger:
       - master
 
 pool:
-  vmImage: ubuntu-latest
+  name: Default
 
 variables:
   - group: clyvocare-secrets
@@ -15,7 +15,7 @@ variables:
   - name: IMAGE
     value: clyvocare-api
   - name: DB_HOST
-    value: oracle-clyvocare563512.brazilsouth.azurecontainer.io
+    value: oracle-clyvocare563512.eastus.azurecontainer.io
   - name: DB_USER
     value: clyvocare
 
@@ -25,12 +25,7 @@ stages:
     jobs:
       - job: build
         steps:
-          - task: JavaToolInstaller@0
-            inputs:
-              versionSpec: '25'
-              jdkArchitectureOption: x64
-              jdkSourceOption: PreInstalled
-          - script: chmod +x gradlew && ./gradlew clean build
+          - script: gradlew.bat clean build
             displayName: Gradle build + testes
           - task: PublishTestResults@2
             condition: succeededOrFailed()
@@ -50,8 +45,9 @@ stages:
             displayName: Docker build e push no ACR
             inputs:
               azureSubscription: sc-azure
-              scriptType: bash
+              scriptType: ps
               scriptLocation: inlineScript
+              failOnStandardError: false
               inlineScript: |
                 az acr login -n $(ACR)
                 docker build -t $(ACR).azurecr.io/$(IMAGE):$(Build.BuildId) .
@@ -71,16 +67,16 @@ stages:
                 - task: AzureCLI@2
                   inputs:
                     azureSubscription: sc-azure
-                    scriptType: bash
+                    scriptType: ps
                     scriptLocation: inlineScript
+                    failOnStandardError: false
                     inlineScript: |
-                      az container delete -g $(RG) -n aci-clyvocare-api --yes || true
-                      az container create -g $(RG) -n aci-clyvocare-api \
-                        --image $(ACR).azurecr.io/$(IMAGE):$(Build.BuildId) \
-                        --os-type Linux --cpu 1 --memory 2 \
-                        --ports 8080 --ip-address Public \
-                        --dns-name-label clyvocare-api-563512 \
-                        --secure-environment-variables \
-                          DB_PASSWORD=$(DB_PASSWORD) JWT_SECRET=$(JWT_SECRET) \
-                        --environment-variables \
-                          DB_HOST=$(DB_HOST) DB_USER=$(DB_USER)
+                      az container delete -g $(RG) -n aci-clyvocare-api --yes
+                      az container create -g $(RG) -n aci-clyvocare-api `
+                        --location eastus `
+                        --image $(ACR).azurecr.io/$(IMAGE):$(Build.BuildId) `
+                        --os-type Linux --cpu 1 --memory 2 `
+                        --ports 8080 --ip-address Public `
+                        --dns-name-label clyvocare-api-563512 `
+                        --secure-environment-variables DB_PASSWORD=$(DB_PASSWORD) JWT_SECRET=$(JWT_SECRET) `
+                        --environment-variables DB_HOST=$(DB_HOST) DB_USER=$(DB_USER)
