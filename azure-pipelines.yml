@@ -1,0 +1,86 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: clyvocare-secrets
+  - name: RG
+    value: rg-clyvocare-s4
+  - name: ACR
+    value: acrclyvocare563512
+  - name: IMAGE
+    value: clyvocare-api
+  - name: DB_HOST
+    value: oracle-clyvocare563512.brazilsouth.azurecontainer.io
+  - name: DB_USER
+    value: clyvocare
+
+stages:
+  - stage: CI
+    displayName: Build e Testes
+    jobs:
+      - job: build
+        steps:
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: '25'
+              jdkArchitectureOption: x64
+              jdkSourceOption: PreInstalled
+          - script: chmod +x gradlew && ./gradlew clean build
+            displayName: Gradle build + testes
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: '**/build/test-results/test/*.xml'
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: build/libs
+              Contents: '*.jar'
+              TargetFolder: $(Build.ArtifactStagingDirectory)
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: $(Build.ArtifactStagingDirectory)
+              ArtifactName: drop
+          - task: AzureCLI@2
+            displayName: Docker build e push no ACR
+            inputs:
+              azureSubscription: sc-azure
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az acr login -n $(ACR)
+                docker build -t $(ACR).azurecr.io/$(IMAGE):$(Build.BuildId) .
+                docker push $(ACR).azurecr.io/$(IMAGE):$(Build.BuildId)
+
+  - stage: CD
+    displayName: Deploy no ACI
+    dependsOn: CI
+    condition: succeeded()
+    jobs:
+      - deployment: deploy
+        environment: producao
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  inputs:
+                    azureSubscription: sc-azure
+                    scriptType: bash
+                    scriptLocation: inlineScript
+                    inlineScript: |
+                      az container delete -g $(RG) -n aci-clyvocare-api --yes || true
+                      az container create -g $(RG) -n aci-clyvocare-api \
+                        --image $(ACR).azurecr.io/$(IMAGE):$(Build.BuildId) \
+                        --os-type Linux --cpu 1 --memory 2 \
+                        --ports 8080 --ip-address Public \
+                        --dns-name-label clyvocare-api-563512 \
+                        --secure-environment-variables \
+                          DB_PASSWORD=$(DB_PASSWORD) JWT_SECRET=$(JWT_SECRET) \
+                        --environment-variables \
+                          DB_HOST=$(DB_HOST) DB_USER=$(DB_USER)
