@@ -27,6 +27,14 @@ stages:
         steps:
           - script: gradlew.bat clean build
             displayName: Gradle build + testes
+            env:
+              SPRING_DATASOURCE_URL: jdbc:oracle:thin:@//$(DB_HOST):1521/XEPDB1
+              SPRING_DATASOURCE_USERNAME: $(DB_USER)
+              SPRING_DATASOURCE_PASSWORD: $(DB_PASSWORD)
+              DB_HOST: $(DB_HOST)
+              DB_USER: $(DB_USER)
+              DB_PASSWORD: $(DB_PASSWORD)
+              JWT_SECRET: $(JWT_SECRET)
           - task: PublishTestResults@2
             condition: succeededOrFailed()
             inputs:
@@ -78,5 +86,5 @@ stages:
                         --os-type Linux --cpu 1 --memory 2 `
                         --ports 8080 --ip-address Public `
                         --dns-name-label clyvocare-api-563512 `
-                        --secure-environment-variables DB_PASSWORD=$(DB_PASSWORD) JWT_SECRET=$(JWT_SECRET) `
-                        --environment-variables DB_HOST=$(DB_HOST) DB_USER=$(DB_USER)
+                        --secure-environment-variables DB_PASSWORD=$(DB_PASSWORD) SPRING_DATASOURCE_PASSWORD=$(DB_PASSWORD) JWT_SECRET=$(JWT_SECRET) `
+                        --environment-variables DB_HOST=$(DB_HOST) DB_USER=$(DB_USER) SPRING_DATASOURCE_URL=jdbc:oracle:thin:@//$(DB_HOST):1521/XEPDB1 SPRING_DATASOURCE_USERNAME=$(DB_USER)
