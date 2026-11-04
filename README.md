@@ -1,465 +1,174 @@
-# 🐾 ClyvoCare OS — DevOps (ACR + ACI)
+# ClyvoCare OS — API (Sprint 4: CI/CD com Azure DevOps)
 
-Entrega da **Sprint 3 — DevOps Tools & Cloud Computing** (FIAP), utilizando a API **ClyvoCare OS**, desenvolvida em Java + Spring Boot.
+Projeto da disciplina **DevOps Tools & Cloud Computing** (FIAP), Sprint 4. API REST em **Java + Spring Boot** para clínicas veterinárias, com pipeline de **CI/CD no Azure DevOps** que compila, testa, publica o artefato, gera a imagem Docker e faz o deploy no **Azure Container Instance (ACI)**, usando **Oracle em container na nuvem**.
 
-Plataforma inteligente de continuidade do cuidado veterinário, com monitoramento preventivo, alertas automáticos e histórico clínico longitudinal do pet.
+## Equipe
 
----
+| RM | Nome | Turma |
+| -- | ---- | ----- |
+| RM563512 | Felipe Maglio | <TURMA> |
+| RM563509 | Vitória Valentina Maglio | <TURMA> |
+| RM564930 | Mateus Granja dos Santos | <TURMA> |
+| RM564339 | João Pedro Bitencourt Goldoni | <TURMA> |
+| RM561786 | Marina Tamagnini Magalhães | <TURMA> |
 
-# 👥 Equipe
+## Links
 
-| Nome | RM |
-|---|---|
-| Vitória Valentina Maglio | RM 563509 |
-| Marina Tamagnini Magalhães | RM 561786 |
-| Mateus Granja dos Santos | RM 564930 |
-| Felipe Maglio Filho | RM 563512 |
-| João Pedro Bitencourt | RM 564339 |
+- Repositório (GitHub): https://github.com/FelipeMaglio/clyvocare-devops
+- Projeto no Azure DevOps: https://dev.azure.com/clyvocare-rm563512/Sprint%204%20%E2%80%93%20Azure%20DevOps
+- Vídeo (YouTube): <LINK_DO_VIDEO>
 
----
+## Descrição da solução
 
-# 📑 Índice
+O **ClyvoCare OS** apoia a rotina de clínicas veterinárias com foco em prevenção e continuidade do cuidado. A API permite:
 
-- [📌 Descrição do Projeto](#-descrição-do-projeto)
-- [💼 Benefícios para o Negócio](#-benefícios-para-o-negócio)
-- [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
-- [☁️ Arquitetura Cloud](#️-arquitetura-cloud)
-- [🗄️ Banco de Dados](#️-banco-de-dados)
-- [🚀 Como Instalar e Rodar Localmente](#-como-instalar-e-rodar-localmente)
-- [☁️ Como Fazer o Deploy no Azure](#️-como-fazer-o-deploy-no-azure)
-- [✅ Evidências de Funcionamento](#-evidências-de-funcionamento)
-- [📌 Funcionalidades da API](#-funcionalidades-da-api)
-- [📂 Estrutura do Repositório](#-estrutura-do-repositório)
-- [🔗 Links](#-links)
+- cadastrar e gerenciar **pets** e seus **exames** (tabelas relacionadas, usadas no CRUD completo);
+- registrar vacinas, consultas e tratamentos;
+- gerar alertas (vacina atrasada, retorno pendente, tratamento abandonado), calcular risco do pet e recomendar cuidados por fase da vida;
+- consultar o histórico clínico completo do pet e um dashboard consolidado.
 
----
+### Benefícios para o negócio
 
-# 📌 Descrição do Projeto
+- Menos vacinas e retornos esquecidos, com mais retorno dos tutores.
+- Priorização de atendimentos pelo score de risco.
+- Histórico clínico centralizado, sem perda de informação entre consultas.
+- Entrega contínua: cada commit na `master` é testado e publicado automaticamente, reduzindo erro manual e tempo de deploy.
 
-O **ClyvoCare OS** é uma API REST desenvolvida em **Java com Spring Boot** com o objetivo de promover a continuidade do cuidado veterinário, através de:
+## Stack de tecnologias
 
-- monitoramento preventivo do histórico clínico do pet
-- alertas automáticos de retorno e reforço de vacina
-- histórico clínico longitudinal, centralizando consultas, exames, tratamentos, prescrições e vacinação
+| Camada | Tecnologia |
+| ------ | ---------- |
+| Aplicação | Java 25, Spring Boot, Spring Data JPA, Spring Security (JWT), Flyway |
+| Build e testes | Gradle, JUnit |
+| Banco de dados | Oracle XE 21 em container (Azure Container Instance), serviço `XEPDB1` |
+| Containerização | Docker (Dockerfile na raiz) |
+| Registro de imagens | Azure Container Registry (ACR) |
+| Execução na nuvem | Azure Container Instance (ACI) |
+| CI/CD | Azure DevOps (Repos, Pipelines YAML, Artifacts, Variable Group, Service Connection) |
+| Agente de build | Agente self-hosted (pool `Default`) com Docker Desktop, Java 25 e Gradle |
+| Documentação da API | Swagger / OpenAPI |
 
-A plataforma cobre o ecossistema completo do cuidado veterinário, incluindo:
+## Diagrama da arquitetura e fluxo CI/CD
 
-- cadastro e autenticação de tutores e veterinários (JWT)
-- cadastro de pets vinculados a um tutor
-- agendamento e conclusão de consultas, com geração automática de lembrete de retorno
-- registro de exames e tratamentos vinculados ao pet e/ou à consulta
-- prescrições vinculadas a um tratamento
-- registro de vacinação com cálculo automático da data de reforço
-- cadastro auxiliar de espécies, cidades, clínicas e itens de catálogo (vacinas/exames padronizados)
+![Arquitetura e fluxo CI/CD](docs/arquitetura-cicd.png)
 
-O código-fonte da aplicação é mantido no repositório [`ClyvoCareSC`](https://github.com/VitoriaMaglio/ClyvoCareSC); este repositório (`clyvocare-devops`) contém a containerização e a infraestrutura de nuvem que publicam essa API.
+### Fluxo numerado
 
----
+| # | Etapa |
+| - | ----- |
+| 1 | O desenvolvedor faz `git push` na branch `master` (Azure Repos). O código também é espelhado no GitHub. |
+| 2 | A mudança na `master` dispara o **CI** automaticamente. |
+| 3 | O Azure Pipelines envia o job ao **agente self-hosted**. |
+| 4 | Gradle compila o projeto e executa os **testes automáticos** (conectando no Oracle em nuvem). |
+| 5 | Resultados dos testes e o **artefato `drop`** (.jar) são publicados no Azure DevOps. |
+| 6 | `docker build` e `docker push` enviam a imagem ao **ACR**, com a tag do build. |
+| 7 | O **CD** é disparado após o artefato gerado e recria o container da API no **ACI**. |
+| 8 | O ACI puxa a imagem do ACR. |
+| 9 | A API se conecta ao Oracle (JDBC, porta 1521). |
+| 10 | O usuário final acessa a API e o Swagger pelo endereço público do ACI. |
 
-# 💼 Benefícios para o Negócio
+## Pipeline (`azure-pipelines.yml`)
 
-| Benefício | Impacto |
-|---|---|
-| Lembrete automático de retorno | Reduz esquecimento de acompanhamento pós-consulta |
-| Cálculo automático de reforço de vacina | Aumenta a adesão dos tutores ao calendário preventivo |
-| Histórico clínico centralizado | Evita retrabalho e perda de informação entre clínicas |
-| Controle de acesso por perfil (tutor x veterinário) | Protege dados sensíveis e restringe ações administrativas |
-| Infraestrutura sob demanda (ACR + ACI) | Elimina o custo de manter uma VM ligada o tempo todo — os containers só rodam enquanto a solução está em uso |
-| Banco Oracle em container | Dados persistidos com segurança e fácil recriação via Flyway |
+- **Trigger:** a cada alteração na branch `master`.
+- **Pool:** agente self-hosted (`Default`).
+- **Stage CI — Build e Testes**
+  1. Gradle `clean build` (executa os testes automáticos).
+  2. `PublishTestResults` publica o resultado dos testes.
+  3. `CopyFiles` + `PublishBuildArtifacts` publicam o artefato `drop`.
+  4. `AzureCLI` faz `docker build` e `docker push` no ACR.
+- **Stage CD — Deploy no ACI** (depende do sucesso do CI)
+  - Recria o container `aci-clyvocare-api` a partir de um arquivo YAML do ACI gerado em tempo de execução, usando a imagem da execução (`$(Build.BuildId)`).
 
----
+### Variáveis protegidas
 
-# 🛠️ Tecnologias Utilizadas
+Usuário, senha e segredos **não** ficam no repositório. Ficam no **Variable Group `clyvocare-secrets`**, com valores marcados como secret (cadeado):
 
-- **Java 25**
-- **Spring Boot 4.1**
-- **Spring Data JPA / Hibernate** (modo `validate`)
-- **Flyway** (versionamento de schema — migrations V1 a V14)
-- **Spring Security + JWT**
-- **Oracle Database** (container `gvenzl/oracle-xe`)
-- **Swagger / OpenAPI** (springdoc 3.1.1)
-- **Gradle**
-- **Docker** (multi-stage, usuário não-root)
-- **Microsoft Azure** (Container Registry + Container Instances)
-- **Azure CLI**
+| Variável | Uso |
+| -------- | --- |
+| `DB_PASSWORD` | Senha do usuário do Oracle |
+| `JWT_SECRET` | Segredo de assinatura do JWT |
+| `ACR_PASSWORD` | Credencial do ACR |
 
----
+Variáveis não sensíveis (`RG`, `ACR`, `IMAGE`, `DB_HOST`, `DB_USER`) ficam no próprio YAML.
 
-# ☁️ Arquitetura Cloud
+## Banco de dados em nuvem
 
-Solução **totalmente containerizada** (Opção 1 do enunciado: **ACR + ACI**), sem VM:
+Oracle XE em container, executado no ACI (`aci-oracle`), com DNS público `oracle-clyvocare563512.eastus.azurecontainer.io`, porta `1521`, serviço `XEPDB1`. O esquema é criado e versionado pelo **Flyway** (`classpath:db/migration`) na inicialização da aplicação.
 
-```
-                         ┌─────────────────────────────┐
-   docker build/push     │   Azure Container Registry   │
-   ────────────────────► │   (armazena a imagem da API) │
-                         └──────────────┬───────────────┘
-                                        │ pull da imagem
-                                        ▼
-                         ┌─────────────────────────────────────┐
-                         │   Azure Container Instances (ACI)     │
-                         │   Container Group "aci-clyvocare"     │
-                         │  ┌───────────────┐ ┌────────────────┐│
-                         │  │ clyvocare-api │ │   oracle-db     ││
-                         │  │  (porta 8080) │◄►│  (porta 1521)  ││
-                         │  │  usuário não  │ │ gvenzl/oracle-  ││
-                         │  │  -root        │ │ xe:21-slim      ││
-                         │  └───────────────┘ └────────────────┘│
-                         └─────────────────┬─────────────────────┘
-                                           │ IP/FQDN público
-                                           ▼
-                                 Usuário / SQL Developer
-```
+## Como reproduzir
 
-### Componentes utilizados
-
-- Azure Container Registry (armazena a imagem da API)
-- Azure Container Instances — Container Group com 2 containers (API + Oracle)
-- Rede pública com FQDN/IP dinâmico, portas 8080 (API) e 1521 (Oracle)
-
-Os dois containers ficam no **mesmo Container Group**, por isso se enxergam por `localhost`. Todos os recursos (Resource Group, ACR, ACI) são criados via **Azure CLI**, conforme exigido no enunciado — nenhum recurso é criado manualmente pelo Portal.
-
----
-
-# 🗄️ Banco de Dados
-
-O schema é controlado por **14 migrations do Flyway** (`src/main/resources/db/migration/V1__...sql` a `V14__...sql`), aplicadas automaticamente na subida da aplicação. O Hibernate roda em modo `validate` — nunca altera o schema, só confere que as entidades batem com o que o Flyway já criou.
-
-O arquivo `script_bd.sql` na raiz deste repositório é a concatenação dessas 14 migrations e serve como o DDL completo exigido na entrega.
-
-**Tabelas núcleo utilizadas no CRUD desta entrega:** `PETS` e `EXAMS`, relacionadas entre si por chave estrangeira (`exams.pet_id → pets.id`). O pet, por sua vez, é vinculado ao tutor por `pets.owner_id → owners.id`.
-
----
-
-# 🚀 Como Instalar e Rodar Localmente
-
-Pré-requisito: **Docker Desktop** instalado e rodando.
+### 1. Infraestrutura (Azure Cloud Shell, Bash)
 
 ```bash
-git clone https://github.com/FelipeMaglio/clyvocare-devops.git
-cd clyvocare-devops
-cp .env.example .env
+RG=rg-clyvocare-s4
+LOC=eastus
+ACR=acrclyvocare563512
+
+az group create -n $RG -l $LOC
+az acr create -g $RG -n $ACR -l $LOC --sku Standard --admin-enabled true
+az acr update -n $ACR --anonymous-pull-enabled true
+
+read -s -p "Senha do banco (letras e numeros): " DB_PASSWORD; echo
+az container create -g $RG -n aci-oracle -l $LOC \
+  --image gvenzl/oracle-xe:21-slim-faststart \
+  --os-type Linux --cpu 2 --memory 4 \
+  --ports 1521 --ip-address Public \
+  --dns-name-label oracle-clyvocare563512 \
+  --secure-environment-variables ORACLE_PASSWORD=$DB_PASSWORD APP_USER_PASSWORD=$DB_PASSWORD \
+  --environment-variables APP_USER=clyvocare
+
+until az container logs -g $RG -n aci-oracle | grep -q "READY TO USE"; do sleep 20; done; echo "ORACLE PRONTO"
 ```
 
-Edite o `.env` com valores de senha/segredo à sua escolha, depois:
+### 2. Azure DevOps
 
-```bash
-docker compose up --build
+1. Criar o projeto **Sprint 4 – Azure DevOps** (Private, Git, processo Agile) e convidar o professor com acesso **Basic**.
+2. Enviar o código para o Azure Repos na branch `master`:
+   ```bash
+   git remote add azure "<URL_DO_REPO_NO_AZURE_REPOS>"
+   git push azure main:master
+   ```
+3. Criar o **Service Connection** `sc-azure` (Azure Resource Manager, grupo `rg-clyvocare-s4`).
+4. Criar o **Variable Group** `clyvocare-secrets` com `DB_PASSWORD`, `JWT_SECRET` e `ACR_PASSWORD` como secret.
+5. Registrar o **agente self-hosted** no pool `Default` (`config.cmd` e `run.cmd`), com Docker Desktop, Java 25 e Azure CLI instalados.
+6. Criar a pipeline a partir do `azure-pipelines.yml` (Azure Repos Git → Existing YAML file → `master`).
+
+### 3. Executar
+
+Qualquer `git push azure main:master` dispara CI e CD. Após o deploy, a API fica em:
+
+```
+http://clyvocare-api-563512.eastus.azurecontainer.io:8080/swagger-ui/index.html
 ```
 
-Aguarde o Oracle ficar `healthy` (2–4 minutos na primeira subida — acompanhe com `docker compose ps` em outro terminal). Depois:
+### 4. Testar o CRUD (pets e exames)
 
-- Swagger: http://localhost:8080/swagger-ui.html
-- Health check: `curl http://localhost:8080/actuator/health`
-
-Autenticação (JWT): cadastre um tutor, faça login em `/api/auth/login`, copie o token e use **Authorize** no Swagger com `Bearer <token>` para acessar as rotas protegidas.
-
-Conexão direta no banco (SQL Developer): Host `localhost`, Porta `1521`, Service Name `XEPDB1`, Usuário `clyvocare`, Senha = a que você definiu no `.env`.
-
-Para derrubar tudo:
-```bash
-docker compose down -v
-```
-
----
-
-# ☁️ Como Fazer o Deploy no Azure
-
-Pré-requisito: acesso ao [Azure Cloud Shell](https://shell.azure.com) (ou Azure CLI logado localmente).
-
-```bash
-git clone https://github.com/FelipeMaglio/clyvocare-devops.git
-cd clyvocare-devops
-chmod +x deploy-aci.sh
-./deploy-aci.sh
-```
-
-O script cria, **tudo via Azure CLI**:
-1. Resource Group
-2. Azure Container Registry (ACR)
-3. Build da imagem da API direto na nuvem (`az acr build`)
-4. Container Group no ACI com dois containers: `clyvocare-api` (porta 8080) e `oracle-db` (porta 1521), com senhas geradas aleatoriamente a cada execução
-
-Ao final, ele imprime o IP/FQDN público da aplicação e grava um arquivo local `deploy-secrets.txt` (fora do controle de versão) com as senhas geradas, necessárias para conectar no banco.
-
-### Limpar os recursos ao terminar
-
-```bash
-az group delete --name rg-clyvocare --yes --no-wait
-```
-
----
-
-# ✅ Evidências de Funcionamento
-
-Após executar o `deploy-aci.sh`, use os comandos abaixo para validar que toda a infraestrutura foi criada corretamente.
-
-## 🐳 Evidência 1 — Containers rodando
-
-```bash
-az container show --resource-group rg-clyvocare --name aci-clyvocare --query containers[].name -o table
-```
-
-### Resultado esperado
-
-```text
-Name
-----------------
-oracle-db
-clyvocare-api
-```
-
----
-
-## 👤 Evidência 2 — Usuário não-root no container da API
-
-```bash
-az container exec --resource-group rg-clyvocare --name aci-clyvocare --container-name clyvocare-api --exec-command whoami
-```
-
-### Resultado esperado
-
-```text
-appuser
-```
-
----
-
-## 📜 Evidência 3 — Logs da aplicação funcionando
-
-```bash
-az container logs --resource-group rg-clyvocare --name aci-clyvocare --container-name clyvocare-api
-```
-
-### Resultado esperado
-
-Deve aparecer algo semelhante a:
-
-```text
-Started ClyvoCareScApplication in X seconds
-```
-
-Confirmando que o Spring Boot e as migrations do Flyway subiram corretamente.
-
----
-
-## 🗄️ Evidência 4 — Logs do banco Oracle
-
-```bash
-az container logs --resource-group rg-clyvocare --name aci-clyvocare --container-name oracle-db
-```
-
-### Resultado esperado
-
-```text
-DATABASE IS READY TO USE!
-```
-
----
-
-## 🗄️ Evidência 5 — Consulta direta no banco via SQL Developer
-
-Dados de conexão (senha real gerada em `deploy-secrets.txt` a cada deploy):
-
-| Campo | Valor |
-|---|---|
-| Hostname | IP/FQDN público exibido ao final do `deploy-aci.sh` |
-| Port | 1521 |
-| Service Name | XEPDB1 |
-| Username | clyvocare |
-| Password | ver `deploy-secrets.txt` |
-
-Após conectar, execute:
+Pelo Swagger (ou por chamadas REST), executar inserir, consultar, atualizar e excluir em **pets** e **exames**, conferindo cada operação no banco:
 
 ```sql
-SELECT * FROM owners;
 SELECT * FROM pets;
-SELECT * FROM exams;
+SELECT * FROM exames;
 ```
 
-### Estrutura esperada no painel
+(Conexão: host `oracle-clyvocare563512.eastus.azurecontainer.io`, porta `1521`, service name `XEPDB1`, usuário `clyvocare`.)
 
-```text
-ClyvoCare Azure
- └── Other Users
-     └── CLYVOCARE
-         └── Tables
-             ├── OWNERS
-             ├── PETS
-             ├── EXAMS
-             ├── APPOINTMENTS
-             ├── VACCINATIONS
-             ├── TREATMENTS
-             ├── PRESCRIPTIONS
-             ├── REMINDERS
-             ├── VETERINARIANS
-             ├── CLINICS
-             ├── SPECIES
-             ├── CITIES
-             └── CATALOG_ITEMS
+### 5. Desligar para não gastar crédito
+
+```bash
+az container stop -g rg-clyvocare-s4 -n aci-clyvocare-api
+az container stop -g rg-clyvocare-s4 -n aci-oracle
 ```
 
-## ⚠️ Atenção sobre IP dinâmico
+## Estrutura do repositório
 
-O IP/FQDN público muda a cada nova execução do `deploy-aci.sh`. Antes de conectar, verifique o valor exibido no resumo final do script e atualize o Hostname no SQL Developer (botão direito na conexão → Properties → Hostname).
-
----
-
-# 📌 Funcionalidades da API
-
-> ⚠️ A API utiliza autenticação JWT. Antes de usar os endpoints protegidos, realize o **registro e login** para obter o token, e cole em **Authorize** no Swagger como `Bearer {token}`.
-
-## 🔐 Autenticação
-
-```http
-POST /api/auth/register/owner
-POST /api/auth/register/veterinarian
-POST /api/auth/login
 ```
-
-Exemplo de body (registro de tutor):
-```json
-{
-  "username": "tutor.exemplo",
-  "password": "senha123",
-  "name": "Nome do Tutor",
-  "phone": "11999999999",
-  "document": "12345678901"
-}
+.
+├── azure-pipelines.yml     # CI/CD
+├── Dockerfile              # imagem da API
+├── docker-compose.yml      # execução local
+├── build.gradle / gradlew  # build
+├── src/                    # código da aplicação
+└── docs/
+    ├── arquitetura-cicd.png
+    └── arquitetura-cicd.svg
 ```
-
-## ✅ Tutores (Owners)
-
-```http
-GET /api/owners/me
-PUT /api/owners/me
-GET /api/owners/{id}
-```
-
-## ✅ Pets
-
-```http
-GET    /api/owners/{ownerId}/pets
-GET    /api/pets/{id}
-POST   /api/pets
-PUT    /api/pets/{id}
-DELETE /api/pets/{id}
-```
-
-Exemplo de body (POST/PUT):
-```json
-{
-  "name": "Rex",
-  "birthDate": "2022-01-15",
-  "sex": "MALE",
-  "currentWeight": 12.5,
-  "breed": "Vira-lata",
-  "ownerId": 1,
-  "speciesId": 1
-}
-```
-
-## ✅ Consultas (Appointments)
-
-```http
-GET   /api/pets/{petId}/appointments
-GET   /api/appointments/{id}
-POST  /api/appointments
-PATCH /api/appointments/{id}/complete
-PATCH /api/appointments/{id}/cancel
-```
-
-> Ao concluir uma consulta (`complete`), o sistema gera automaticamente um lembrete de retorno.
-
-## ✅ Exames
-
-```http
-GET    /api/pets/{petId}/exams
-GET    /api/exams/{id}
-POST   /api/exams
-PUT    /api/exams/{id}
-DELETE /api/exams/{id}
-```
-
-Exemplo de body (POST/PUT) — requer perfil **veterinário**:
-```json
-{
-  "examType": "Hemograma completo",
-  "requestDate": "2026-09-11",
-  "petId": 1
-}
-```
-
-## ✅ Tratamentos e Prescrições
-
-```http
-GET   /api/pets/{petId}/treatments
-POST  /api/treatments
-PUT   /api/treatments/{id}
-PATCH /api/treatments/{id}/complete
-PATCH /api/treatments/{id}/suspend
-
-GET  /api/treatments/{treatmentId}/prescriptions
-POST /api/prescriptions
-```
-
-## ✅ Vacinação
-
-```http
-GET  /api/pets/{petId}/vaccinations
-POST /api/vaccinations
-```
-
-Exemplo de body (POST):
-```json
-{
-  "applicationDate": "2026-09-11",
-  "petId": 1,
-  "catalogItemId": 1
-}
-```
-
-> Ao registrar a vacina, o sistema **calcula automaticamente a data do próximo reforço**.
-
-## ✅ Lembretes (Reminders)
-
-```http
-GET   /api/owners/me/reminders
-PATCH /api/reminders/{id}/sent
-PATCH /api/reminders/{id}/confirmed
-```
-
-## ✅ Cadastros Auxiliares
-
-```http
-GET/POST/PUT/DELETE  /api/species
-GET/POST/PUT/DELETE  /api/cities
-GET/POST/PUT/DELETE  /api/clinics
-GET/POST/PUT/DELETE  /api/catalog-items
-GET                  /api/veterinarians
-GET/PUT              /api/veterinarians/me
-```
-
----
-
-# 📂 Estrutura do Repositório
-
-```text
-clyvocare-devops/
-├── src/                          # código-fonte da API (Java 25 / Spring Boot 4.1)
-├── build.gradle, settings.gradle, gradlew   # build Gradle
-├── Dockerfile                    # build multi-stage, usuário não-root
-├── docker-compose.yml            # ambiente local (app + Oracle)
-├── .env.example                  # modelo de variáveis de ambiente (sem segredos reais)
-├── aci-clyvocare.template.yaml   # definição do Container Group (ACI)
-├── deploy-aci.sh                 # cria RG + ACR + ACI via Azure CLI
-├── script_bd.sql                 # DDL consolidado (migrations do Flyway)
-└── README.md
-```
-
----
-
-# 🔗 Links
-
-- Repositório do código-fonte: https://github.com/VitoriaMaglio/ClyvoCareSC
-- Link do vídeo: https://youtu.be/dW93LktXAXY

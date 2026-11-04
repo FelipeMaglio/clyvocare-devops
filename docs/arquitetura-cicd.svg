@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 900" width="1500" height="900" font-family="Segoe UI, Helvetica, Arial, DejaVu Sans, sans-serif">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#334155"/>
+    </marker>
+    <marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <rect width="1500" height="900" fill="#F8FAFC"/>
+
+  <text x="750" y="40" text-anchor="middle" font-size="24" font-weight="700" fill="#0F172A">ClyvoCare — Arquitetura e fluxo CI/CD (Sprint 4)</text>
+  <text x="750" y="64" text-anchor="middle" font-size="13" fill="#475569">Java Spring Boot • Oracle XE em container • Azure DevOps com agente self-hosted • Azure Container Registry • Azure Container Instance</text>
+
+  <!-- ===== Persona: Desenvolvedor ===== -->
+  <circle cx="105" cy="130" r="16" fill="#0F6CBD"/>
+  <path d="M80,190 Q80,155 105,155 Q130,155 130,190 Z" fill="#0F6CBD"/>
+  <text x="105" y="207" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Desenvolvedor</text>
+  <path d="M105,213 L105,233" stroke="#334155" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+  <rect x="40" y="235" width="130" height="70" rx="8" fill="#fff" stroke="#64748B" stroke-width="1.5"/>
+  <text x="105" y="262" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Git local</text>
+  <text x="105" y="282" text-anchor="middle" font-size="12" fill="#475569">editor + git push</text>
+
+  <rect x="40" y="360" width="130" height="60" rx="8" fill="#fff" stroke="#64748B" stroke-width="1.5"/>
+  <text x="105" y="386" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">GitHub</text>
+  <text x="105" y="405" text-anchor="middle" font-size="12" fill="#475569">espelho do código</text>
+  <path d="M105,305 L105,358" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6,4" fill="none" marker-end="url(#ahd)"/>
+  <text x="114" y="338" font-size="11" fill="#475569">git push origin</text>
+
+  <!-- ===== Zona Azure DevOps ===== -->
+  <rect x="250" y="90" width="560" height="470" rx="12" fill="#EAF2FB" stroke="#0F6CBD" stroke-width="2"/>
+  <text x="265" y="114" font-size="15" font-weight="700" fill="#0F4C8A">Azure DevOps — projeto "Sprint 4 – Azure DevOps" (Private)</text>
+
+  <rect x="270" y="150" width="150" height="70" rx="8" fill="#fff" stroke="#0F6CBD" stroke-width="1.5"/>
+  <text x="345" y="180" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Azure Repos</text>
+  <text x="345" y="200" text-anchor="middle" font-size="12" fill="#475569">branch master</text>
+
+  <rect x="270" y="250" width="150" height="70" rx="8" fill="#fff" stroke="#0F6CBD" stroke-width="1.5"/>
+  <text x="345" y="280" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Azure Artifacts</text>
+  <text x="345" y="300" text-anchor="middle" font-size="12" fill="#475569">artefato drop (.jar)</text>
+
+  <rect x="270" y="350" width="150" height="70" rx="8" fill="#fff" stroke="#0F6CBD" stroke-width="1.5"/>
+  <text x="345" y="380" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Variable Group</text>
+  <text x="345" y="400" text-anchor="middle" font-size="12" fill="#475569">segredos protegidos</text>
+
+  <rect x="270" y="450" width="150" height="70" rx="8" fill="#fff" stroke="#0F6CBD" stroke-width="1.5"/>
+  <text x="345" y="480" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Service Connection</text>
+  <text x="345" y="500" text-anchor="middle" font-size="12" fill="#475569">sc-azure (Azure RM)</text>
+
+  <rect x="470" y="130" width="330" height="290" rx="10" fill="#fff" stroke="#0F6CBD" stroke-width="1.5"/>
+  <text x="635" y="152" text-anchor="middle" font-size="14" font-weight="700" fill="#0F4C8A">Azure Pipelines (YAML)</text>
+
+  <rect x="485" y="165" width="300" height="125" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.3"/>
+  <text x="500" y="187" font-size="14" font-weight="700" fill="#0C4A6E">CI — dispara a cada commit na master</text>
+  <text x="500" y="209" font-size="12" fill="#0F172A">• Gradle build + testes automáticos</text>
+  <text x="500" y="227" font-size="12" fill="#0F172A">• Publica resultados dos testes</text>
+  <text x="500" y="245" font-size="12" fill="#0F172A">• Publica o artefato drop</text>
+  <text x="500" y="263" font-size="12" fill="#0F172A">• docker build + push da imagem (ACR)</text>
+
+  <rect x="485" y="305" width="300" height="100" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.3"/>
+  <text x="500" y="327" font-size="14" font-weight="700" fill="#14532D">CD — após novo artefato gerado</text>
+  <text x="500" y="349" font-size="12" fill="#0F172A">• Recria o container da API no ACI</text>
+  <text x="500" y="367" font-size="12" fill="#0F172A">• Imagem com a tag do build</text>
+  <text x="500" y="385" font-size="12" fill="#0F172A">• Segredos vindos do variable group</text>
+
+  <!-- ===== Agente self-hosted ===== -->
+  <rect x="460" y="610" width="350" height="170" rx="10" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+  <text x="635" y="635" text-anchor="middle" font-size="14" font-weight="700" fill="#78350F">Agente self-hosted (pool Default)</text>
+  <rect x="480" y="650" width="150" height="105" rx="8" fill="#fff" stroke="#B45309" stroke-width="1.3"/>
+  <text x="555" y="685" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">Gradle + Java 25</text>
+  <text x="555" y="706" text-anchor="middle" font-size="12" fill="#475569">compila e executa</text>
+  <text x="555" y="724" text-anchor="middle" font-size="12" fill="#475569">os testes</text>
+  <rect x="640" y="650" width="150" height="105" rx="8" fill="#fff" stroke="#B45309" stroke-width="1.3"/>
+  <text x="715" y="685" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">Docker Desktop</text>
+  <text x="715" y="706" text-anchor="middle" font-size="12" fill="#475569">build e push</text>
+  <text x="715" y="724" text-anchor="middle" font-size="12" fill="#475569">da imagem</text>
+
+  <!-- ===== Zona Azure ===== -->
+  <rect x="880" y="90" width="420" height="700" rx="12" fill="#ECFDF5" stroke="#15803D" stroke-width="2"/>
+  <text x="895" y="114" font-size="15" font-weight="700" fill="#14532D">Microsoft Azure — rg-clyvocare-s4 (East US)</text>
+
+  <rect x="920" y="150" width="340" height="100" rx="8" fill="#fff" stroke="#15803D" stroke-width="1.5"/>
+  <text x="1090" y="183" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Azure Container Instance</text>
+  <text x="1090" y="205" text-anchor="middle" font-size="13" fill="#0F172A">API ClyvoCare (Spring Boot :8080)</text>
+  <text x="1090" y="226" text-anchor="middle" font-size="12" fill="#475569">Swagger UI + API REST</text>
+
+  <rect x="920" y="350" width="340" height="90" rx="8" fill="#fff" stroke="#15803D" stroke-width="1.5"/>
+  <text x="1090" y="383" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Azure Container Registry</text>
+  <text x="1090" y="406" text-anchor="middle" font-size="12" fill="#475569">acrclyvocare563512 • imagem Docker</text>
+
+  <rect x="920" y="590" width="340" height="100" rx="8" fill="#fff" stroke="#15803D" stroke-width="1.5"/>
+  <text x="1090" y="622" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Azure Container Instance</text>
+  <text x="1090" y="644" text-anchor="middle" font-size="13" fill="#0F172A">Oracle XE em container :1521</text>
+  <text x="1090" y="665" text-anchor="middle" font-size="12" fill="#475569">serviço XEPDB1 • banco em nuvem</text>
+
+  <!-- ===== Persona: Usuário final ===== -->
+  <circle cx="1390" cy="130" r="16" fill="#15803D"/>
+  <path d="M1365,190 Q1365,155 1390,155 Q1415,155 1415,190 Z" fill="#15803D"/>
+  <text x="1390" y="210" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">Usuário final</text>
+  <text x="1390" y="227" text-anchor="middle" font-size="12" fill="#475569">navegador / professor</text>
+
+  <!-- ===== Linhas de apoio (tracejadas) ===== -->
+  <path d="M420,385 L470,385" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6,4" fill="none" marker-end="url(#ahd)"/>
+  <path d="M420,485 L520,485 L520,420" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6,4" fill="none" marker-end="url(#ahd)"/>
+
+  <!-- ===== Setas do fluxo ===== -->
+  <path d="M170,270 L220,270 L220,185 L270,185" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+  <path d="M420,190 L485,190" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+  <path d="M560,420 L560,610" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+  <path d="M810,720 L890,720 L890,660 L920,660" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+  <path d="M460,720 L240,720 L240,285 L270,285" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+  <path d="M810,630 L850,630 L850,395 L920,395" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+  <path d="M800,355 L840,355 L840,200 L920,200" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+  <path d="M1090,350 L1090,250" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+  <path d="M1260,225 L1285,225 L1285,640 L1260,640" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+  <path d="M1360,175 L1260,175" stroke="#334155" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+
+  <!-- ===== Números do fluxo ===== -->
+  <g fill="#C2410C"><circle cx="220" cy="228" r="13"/><circle cx="452" cy="190" r="13"/><circle cx="560" cy="515" r="13"/><circle cx="850" cy="720" r="13"/><circle cx="240" cy="500" r="13"/><circle cx="850" cy="512" r="13"/><circle cx="840" cy="278" r="13"/><circle cx="1090" cy="300" r="13"/><circle cx="1285" cy="430" r="13"/><circle cx="1330" cy="175" r="13"/></g>
+  <g fill="#fff" font-size="13" font-weight="700" text-anchor="middle">
+    <text x="220" y="233">1</text><text x="452" y="195">2</text><text x="560" y="520">3</text><text x="850" y="725">4</text><text x="240" y="505">5</text>
+    <text x="850" y="517">6</text><text x="840" y="283">7</text><text x="1090" y="305">8</text><text x="1285" y="435">9</text><text x="1330" y="180" font-size="12">10</text>
+  </g>
+
+  <!-- ===== Legenda ===== -->
+  <rect x="40" y="810" width="1420" height="80" rx="8" fill="#fff" stroke="#CBD5E1" stroke-width="1.3"/>
+  <g fill="#C2410C"><circle cx="62" cy="835" r="11"/><circle cx="347" cy="835" r="11"/><circle cx="632" cy="835" r="11"/><circle cx="917" cy="835" r="11"/><circle cx="1202" cy="835" r="11"/>
+    <circle cx="62" cy="865" r="11"/><circle cx="347" cy="865" r="11"/><circle cx="632" cy="865" r="11"/><circle cx="917" cy="865" r="11"/><circle cx="1202" cy="865" r="11"/></g>
+  <g fill="#fff" font-size="12" font-weight="700" text-anchor="middle">
+    <text x="62" y="839">1</text><text x="347" y="839">2</text><text x="632" y="839">3</text><text x="917" y="839">4</text><text x="1202" y="839">5</text>
+    <text x="62" y="869">6</text><text x="347" y="869">7</text><text x="632" y="869">8</text><text x="917" y="869">9</text><text x="1202" y="869" font-size="11">10</text>
+  </g>
+  <g font-size="12" fill="#0F172A">
+    <text x="80" y="839">git push na branch master</text>
+    <text x="365" y="839">CI dispara automaticamente</text>
+    <text x="650" y="839">job enviado ao agente self-hosted</text>
+    <text x="935" y="839">Gradle build + testes (Oracle)</text>
+    <text x="1220" y="839">publica o artefato drop</text>
+    <text x="80" y="869">docker build + push no ACR</text>
+    <text x="365" y="869">CD: recria o ACI da API</text>
+    <text x="650" y="869">ACI puxa a imagem do ACR</text>
+    <text x="935" y="869">API conecta no Oracle (JDBC)</text>
+    <text x="1220" y="869">usuário acessa Swagger / API</text>
+  </g>
+</svg>
