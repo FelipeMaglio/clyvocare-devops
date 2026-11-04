@@ -4,19 +4,19 @@ Projeto da disciplina **DevOps Tools & Cloud Computing** (FIAP), Sprint 4. API R
 
 ## Equipe
 
-| RM | Nome | Turma |
-| -- | ---- | ----- |
-| RM563512 | Felipe Maglio | <TURMA> |
-| RM563509 | Vitória Valentina Maglio | <TURMA> |
-| RM564930 | Mateus Granja dos Santos | <TURMA> |
-| RM564339 | João Pedro Bitencourt Goldoni | <TURMA> |
-| RM561786 | Marina Tamagnini Magalhães | <TURMA> |
+| RM | Nome | 
+| -- | ---- | 
+| RM563512 | Felipe Maglio | 
+| RM563509 | Vitória Valentina Maglio | 
+| RM564930 | Mateus Granja dos Santos | 
+| RM564339 | João Pedro Bitencourt Goldoni | 
+| RM561786 | Marina Tamagnini Magalhães | 
 
 ## Links
 
 - Repositório (GitHub): https://github.com/FelipeMaglio/clyvocare-devops
 - Projeto no Azure DevOps: https://dev.azure.com/clyvocare-rm563512/Sprint%204%20%E2%80%93%20Azure%20DevOps
-- Vídeo (YouTube): <LINK_DO_VIDEO>
+- Vídeo (YouTube): <[LINK_DO_VIDEO](https://youtu.be/ycwhQKPyN_0)>
 
 ## Descrição da solução
 
