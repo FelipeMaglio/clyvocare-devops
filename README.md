@@ -125,7 +125,7 @@ until az container logs -g $RG -n aci-oracle | grep -q "READY TO USE"; do sleep 
 1. Criar o projeto **Sprint 4 – Azure DevOps** (Private, Git, processo Agile) e convidar o professor com acesso **Basic**.
 2. Enviar o código para o Azure Repos na branch `master`:
    ```bash
-   git remote add azure "<URL_DO_REPO_NO_AZURE_REPOS>"
+   git remote add azure "https://dev.azure.com/clyvocare-rm563512/Sprint%204%20%E2%80%93%20Azure%20DevOps/_git/Sprint%204%20%E2%80%93%20Azure%20DevOps"
    git push azure main:master
    ```
 3. Criar o **Service Connection** `sc-azure` (Azure Resource Manager, grupo `rg-clyvocare-s4`).
