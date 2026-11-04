@@ -1,4 +1,4 @@
-# ClyvoCare OS — API (Sprint 4: CI/CD com Azure DevOps)
+﻿# ClyvoCare OS — API (Sprint 4: CI/CD com Azure DevOps)
 
 Projeto da disciplina **DevOps Tools & Cloud Computing** (FIAP), Sprint 4. API REST em **Java + Spring Boot** para clínicas veterinárias, com pipeline de **CI/CD no Azure DevOps** que compila, testa, publica o artefato, gera a imagem Docker e faz o deploy no **Azure Container Instance (ACI)**, usando **Oracle em container na nuvem**.
 
@@ -50,7 +50,7 @@ O **ClyvoCare OS** apoia a rotina de clínicas veterinárias com foco em preven�
 
 ## Diagrama da arquitetura e fluxo CI/CD
 
-![Arquitetura e fluxo CI/CD](docs/arquitetura-cicd.png)
+![Arquitetura e fluxo CI/CD](docs/arquitetura-cicd.svg)
 
 ### Fluxo numerado
 
@@ -172,3 +172,4 @@ az container stop -g rg-clyvocare-s4 -n aci-oracle
     ├── arquitetura-cicd.png
     └── arquitetura-cicd.svg
 ```
+
