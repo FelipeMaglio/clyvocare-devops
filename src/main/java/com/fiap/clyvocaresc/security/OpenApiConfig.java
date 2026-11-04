@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(
-        info = @Info(title = "ClyvoCare API v2", version = "v2"),
+        info = @Info(title = "ClyvoCare API v3", version = "v3"),
         security = @SecurityRequirement(name = "bearerAuth"))
 @SecurityScheme(
         name = "bearerAuth",
